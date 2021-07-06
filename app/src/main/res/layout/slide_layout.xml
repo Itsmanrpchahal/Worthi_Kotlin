@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_gravity="center_horizontal">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center_horizontal">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/pagenumbertv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/4"
+        android:layout_gravity="center_horizontal"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black">
+
+    </TextView>
+
+    <ImageView
+        android:id="@+id/frameimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/frame"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/heading1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginTop="20sp"
+        android:textSize="20sp"
+        android:text="Your data is worth more than you Think">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/heading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_marginTop="15sp"
+        android:textSize="14sp"
+        android:text="Your data is worth more than you Think">
+
+    </TextView>
+
+
+
+</LinearLayout>

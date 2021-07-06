@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Worthi</string>
+    <string name="slideonetext">Your data is worth  more than you Think</string>
+    <string name="slidetwotext">Get matched with  brands you care about</string>
+    <string name="slidethreetext">Get paid fairly for the data you share</string>
+    <string name="slidefourtext">Earn more as you complete your profile</string>
+    <string name="skdetwo">Answer a few questions about your interests and make money</string>
+    <string name="slideone">"Worthi will only match you with *brands that fit your interests "</string>
+    <string name="slidethree">We believe your data is worth something you get money for the information you share</string>
+    <string name="slidefour">The amount of money you receive increases when you complete your profile.</string>
+    <string name="one">1/4</string>
+    <string name="two">2/4</string>
+    <string name="three">3/4</string>
+    <string name="four">4/4</string>
+</resources>
