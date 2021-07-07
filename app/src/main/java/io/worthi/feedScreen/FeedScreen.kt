@@ -9,7 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.worthi.R
 import io.worthi.feedScreen.fragments.FeedFrag
 import io.worthi.feedScreen.fragments.InteractionFrag
-import io.worthi.feedScreen.fragments.ProfileFrag
+import io.worthi.feedScreen.fragments.profile.ProfileFrag
 import io.worthi.feedScreen.fragments.RewardsFrag
 
 class FeedScreen : AppCompatActivity() {
@@ -52,7 +52,7 @@ class FeedScreen : AppCompatActivity() {
                 }
                 R.id.profile -> {
                     val transaction = fragmentManager.beginTransaction()
-                    transaction.replace(R.id.container,ProfileFrag())
+                    transaction.replace(R.id.container, ProfileFrag())
                     //transaction.addToBackStack(null)
                     transaction.commit()
                     true

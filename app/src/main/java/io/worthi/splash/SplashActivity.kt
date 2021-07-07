@@ -17,11 +17,14 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import io.worthi.Constant.BaseClass
 import io.worthi.R
+import io.worthi.Utilities.Constants
+import io.worthi.feedScreen.FeedScreen
 import io.worthi.welcomescreens.MainActivity
 
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseClass() {
 
     var permissions = arrayOf<String>(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -65,7 +68,15 @@ requestStoragePermission()
                     // check if all permissions are granted
                     if (report.areAllPermissionsGranted()) {
                         perclear = true
-                        startActivity(Intent(this@SplashActivity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+
+                        if (!getStringVal(Constants.TOKEN).equals(""))
+                        {
+                            startActivity(Intent(this@SplashActivity,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                            finish()
+                        }else {
+                            startActivity(Intent(this@SplashActivity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                            finish()
+                        }
                         // Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
                     } else {
                     }

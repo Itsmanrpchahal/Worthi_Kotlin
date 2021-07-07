@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         nextbt?.setOnClickListener {
             startActivity(Intent(this,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            finish()
         }
     }
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".feedScreen.fragments.ProfileFrag">
+    tools:context=".feedScreen.fragments.profile.ProfileFrag">
 
 
 
@@ -205,6 +205,7 @@
             </Button>
 
             <Button
+                android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="16dp"
