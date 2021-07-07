@@ -1,6 +1,7 @@
 package io.worthi.welcomescreens
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.WindowManager
@@ -11,6 +12,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.worthi.R
+import io.worthi.loginscreen.LoginScreen
 import io.worthi.welcomescreens.adapter.SliderAdapter
 
 
@@ -54,6 +56,14 @@ class MainActivity : AppCompatActivity() {
 //        }.attach()
         //addBottomDots(0)
 
+        listeners()
+    }
+
+    private fun listeners() {
+        nextbt?.setOnClickListener {
+            startActivity(Intent(this,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        }
     }
 
     fun init()
@@ -109,9 +119,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                nextbt?.setOnClickListener {
 
-                }
 
             }
 

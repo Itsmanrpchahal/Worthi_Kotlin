@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="etbccolor">#F0F0F0</color>
+    <color name="appcolor">#7D5334</color>
+    <color name="themecolor">#F0B28C</color>
+    <color name="gray">#E4E4E4</color>
 </resources>
