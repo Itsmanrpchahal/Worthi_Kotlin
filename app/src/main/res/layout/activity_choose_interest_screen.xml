@@ -17,10 +17,13 @@
     </ImageView>
 
     <LinearLayout
+        android:id="@+id/id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="start">
+
 
     <TextView
         android:layout_width="match_parent"
@@ -46,14 +49,19 @@
 
         </TextView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-        </androidx.recyclerview.widget.RecyclerView>
 
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/id"
+        android:layout_above="@id/continuefeed">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Button
         android:id="@+id/continuefeed"

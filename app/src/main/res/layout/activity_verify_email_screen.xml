@@ -55,6 +55,7 @@
         </TextView>
 
         <TextView
+            android:id="@+id/timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="05:05"
@@ -107,9 +108,11 @@
         </Button>
 
         <TextView
+            android:id="@+id/resendcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Resend Code?"
+            android:enabled="false"
             android:layout_gravity="center"
             android:textColor="@color/themecolor">
 

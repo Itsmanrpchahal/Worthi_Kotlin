@@ -36,41 +36,73 @@
 
         </TextView>
 
-        <EditText
-            android:id="@+id/age"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="25dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:background="@color/etbccolor"
-            android:drawableLeft="@drawable/ic_calender"
-            android:paddingLeft="10dp"
-            android:hint="Age"
-            android:textColor="@color/black"
-            android:inputType="number"
-            android:textColorHint="@color/black"
-            android:drawablePadding="10dp">
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
-        </EditText>
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_calender"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp">
 
-        <EditText
-            android:id="@+id/gender"
+            </ImageView>
+
+            <Spinner
+                android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="10dp"
+                android:hint="Age"
+                android:textColor="@color/black"
+                android:inputType="number"
+                android:textColorHint="@color/black"
+                android:drawablePadding="10dp">
+
+            </Spinner>
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="25dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:background="@color/etbccolor"
-            android:drawableLeft="@drawable/ic_gender"
-            android:paddingLeft="10dp"
-            android:hint="Gender"
-            android:textColor="@color/black"
-            android:inputType="number"
-            android:textColorHint="@color/black"
-            android:drawablePadding="10dp">
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
-        </EditText>
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_gender"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp">
+
+            </ImageView>
+
+            <Spinner
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="10dp"
+                android:hint="Gender"
+                android:textColor="@color/black"
+                android:inputType="number"
+                android:textColorHint="@color/black"
+                android:drawablePadding="10dp">
+
+            </Spinner>
+        </LinearLayout>
+
+
 
         <EditText
             android:id="@+id/location"

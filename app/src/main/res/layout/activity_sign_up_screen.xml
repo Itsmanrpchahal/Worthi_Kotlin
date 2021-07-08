@@ -30,6 +30,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/signuptv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Signup"
@@ -133,13 +134,14 @@
                 android:background="@color/etbccolor"
                 android:orientation="horizontal">
 
+
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/black"
-                    style="@style/spinnerTheme"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center_vertical"
+                    style="@style/spinnerTheme">
 
                 </Spinner>
 

@@ -1,19 +1,30 @@
 package io.worthi.controller
 
 import io.worthi.SignUp.response.SignUpResponse
+import io.worthi.VerifyEmail.response.VerifyResponse
 import io.worthi.WebAPI.WebAPI
+import io.worthi.chooseInterest.response.AddInterestsResponse
+import io.worthi.chooseInterest.response.GetInterestsResponse
 import io.worthi.feedScreen.fragments.profile.response.LogoutResponse
+import io.worthi.feedScreen.fragments.profile.response.SendFeedbackResponse
 import io.worthi.loginscreen.LoginScreen
 import io.worthi.loginscreen.response.LoginResponse
+import io.worthi.yourInfo.response.YourInfoResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.StringReader
 
 class Controller {
     var webAPI: WebAPI? = null
     var loginAPI : LoginAPI?= null
     var logoutAPI : LogoutAPI? = null
     var signUpAPI : SignUpAPI? = null
+    var verifyAPI : VerifyEmailAPI? = null
+    var yourInfoAPI : YourInfoAPI? = null
+    var getInterestAPI : GetInterestAPI? = null
+    var addInterestAPI : AddInterestAPI?=null
+    var sendFeedbackAPI : SendFeedbackAPI?=null
 
     fun Controller(login: LoginAPI)
     {
@@ -21,15 +32,35 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(logout:LogoutAPI)
+    fun Controller(logout:LogoutAPI,sendFeedback: SendFeedbackAPI)
     {
         logoutAPI = logout
+        sendFeedbackAPI = sendFeedback
         webAPI = WebAPI()
     }
 
     fun Controller(signUp: SignUpAPI)
     {
         signUpAPI = signUp
+        webAPI = WebAPI()
+    }
+
+    fun Controller(verifyEmail: VerifyEmailAPI)
+    {
+        verifyAPI = verifyEmail
+        webAPI = WebAPI()
+    }
+
+    fun Controller(yourInfo: YourInfoAPI)
+    {
+        yourInfoAPI = yourInfo
+        webAPI = WebAPI()
+    }
+
+    fun Controller(getInterest: GetInterestAPI,addInterest: AddInterestAPI)
+    {
+        getInterestAPI = getInterest
+        addInterestAPI = addInterest
         webAPI = WebAPI()
     }
 
@@ -84,6 +115,96 @@ class Controller {
         })
     }
 
+    fun Verify(cookie:String,Accept:String,mobile_number:String,otp:String)
+    {
+        webAPI?.api?.verify(cookie,Accept,mobile_number,otp)?.enqueue(object :Callback<VerifyResponse>
+        {
+            override fun onResponse(
+                call: Call<VerifyResponse>,
+                response: Response<VerifyResponse>
+            ) {
+                verifyAPI?.onVerifySuccess(response)
+            }
+
+            override fun onFailure(call: Call<VerifyResponse>, t: Throwable) {
+                verifyAPI?.onError(t?.message!!)
+            }
+
+        })
+    }
+
+    fun YourInfo(token:String,accept:String,age:String,gender:String,location:String)
+    {
+        webAPI?.api?.yourInfo(token,accept,age, gender, location)?.enqueue(object :Callback<YourInfoResponse>
+        {
+            override fun onResponse(
+                call: Call<YourInfoResponse>,
+                response: Response<YourInfoResponse>
+            ) {
+                yourInfoAPI?.onYourInfoAPI(response)
+            }
+
+            override fun onFailure(call: Call<YourInfoResponse>, t: Throwable) {
+               yourInfoAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
+    fun GetInterest(token:String,accept:String)
+    {
+        webAPI?.api?.GetInterests(token,accept)?.enqueue(object :Callback<ArrayList<GetInterestsResponse>>
+        {
+            override fun onResponse(
+                call: Call<ArrayList<GetInterestsResponse>>,
+                response: Response<ArrayList<GetInterestsResponse>>
+            ) {
+                getInterestAPI?.onGetInterestAPI(response)
+            }
+
+            override fun onFailure(call: Call<ArrayList<GetInterestsResponse>>, t: Throwable) {
+                getInterestAPI?.onError(t?.message!!)
+            }
+
+        })
+    }
+
+    fun AddInterest(token: String,accept: String,interest:String)
+    {
+       webAPI?.api?.addInterest(token,accept,interest)?.enqueue(object :Callback<AddInterestsResponse>
+       {
+           override fun onResponse(
+               call: Call<AddInterestsResponse>,
+               response: Response<AddInterestsResponse>
+           ) {
+               addInterestAPI?.onAddInterestAPI(response)
+           }
+
+           override fun onFailure(call: Call<AddInterestsResponse>, t: Throwable) {
+              addInterestAPI?.onError(t.message!!)
+           }
+
+       })
+    }
+
+    fun SendFeedback(token: String,accept: String,feedback:String)
+    {
+        webAPI?.api?.feedback(token,accept,feedback)?.enqueue(object :Callback<ArrayList<SendFeedbackResponse>>
+        {
+            override fun onResponse(
+                call: Call<ArrayList<SendFeedbackResponse>>,
+                response: Response<ArrayList<SendFeedbackResponse>>
+            ) {
+                sendFeedbackAPI?.onSendfeedbackAPI(response)
+            }
+
+            override fun onFailure(call: Call<ArrayList<SendFeedbackResponse>>, t: Throwable) {
+                sendFeedbackAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
     interface LoginAPI {
         fun onLoginSuccess(response: Response<LoginResponse>)
         fun onError(error:String)
@@ -96,6 +217,30 @@ class Controller {
 
     interface SignUpAPI {
         fun onSignUpSuccess(response: Response<SignUpResponse>)
+        fun onError(error: String)
+    }
+
+    interface VerifyEmailAPI {
+        fun onVerifySuccess(success:Response<VerifyResponse>)
+        fun onError(error: String)
+    }
+
+    interface YourInfoAPI {
+        fun onYourInfoAPI(success: Response<YourInfoResponse>)
+        fun onError(error: String)
+    }
+
+    interface GetInterestAPI {
+        fun onGetInterestAPI(success:Response<ArrayList<GetInterestsResponse>>)
+        fun onError(error: String)
+    }
+    interface AddInterestAPI {
+        fun onAddInterestAPI(successs:Response<AddInterestsResponse>)
+        fun onError(error: String)
+    }
+
+    interface SendFeedbackAPI {
+        fun onSendfeedbackAPI (successs: Response<ArrayList<SendFeedbackResponse>>)
         fun onError(error: String)
     }
 }

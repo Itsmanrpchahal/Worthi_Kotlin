@@ -1,13 +1,23 @@
 package io.worthi.WebAPI;
 
+import java.util.ArrayList;
+
 import io.worthi.SignUp.response.SignUpResponse;
+import io.worthi.VerifyEmail.response.VerifyResponse;
+import io.worthi.chooseInterest.response.AddInterestsResponse;
+import io.worthi.chooseInterest.response.GetInterestsResponse;
 import io.worthi.feedScreen.fragments.profile.response.LogoutResponse;
+import io.worthi.feedScreen.fragments.profile.response.SendFeedbackResponse;
 import io.worthi.loginscreen.response.LoginResponse;
+import io.worthi.yourInfo.response.YourInfoResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.HEAD;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -26,11 +36,51 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("register")
     Call<SignUpResponse> signUp(
-        @Field("name") String name,
-        @Field("email") String email,
-        @Field("password") String password,
-        @Field("phone_number") String phone_number,
-        @Field("role_id") String role_id
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("phone_number") String phone_number,
+            @Field("role_id") String role_id
     );
 
+    @FormUrlEncoded
+    @POST("verify-otp")
+    Call<VerifyResponse> verify(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept,
+            @Field("mobile_number") String mobile_number,
+            @Field("otp") String otp
+    );
+
+    @FormUrlEncoded
+    @POST("create-user-profile")
+    Call<YourInfoResponse> yourInfo(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept,
+            @Field("age") String age,
+            @Field("gender") String gender,
+            @Field("location") String location
+    );
+
+    @GET("get-interests")
+    Call<ArrayList<GetInterestsResponse>> GetInterests(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept
+    );
+
+    @FormUrlEncoded
+    @POST("user-create-interest")
+    Call<AddInterestsResponse> addInterest(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept,
+            @Field("interests") String interests
+    );
+
+    @FormUrlEncoded
+    @POST("feedback")
+    Call<ArrayList<SendFeedbackResponse>> feedback(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept,
+            @Field("feedback") String feedback
+    );
 }
