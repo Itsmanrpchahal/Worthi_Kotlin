@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
-    tools:context=".feedScreen.fragments.FeedFrag">
+    tools:context=".feedScreen.fragments.feeds.FeedFrag">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -141,6 +141,7 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/getcampainsrecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">

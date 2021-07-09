@@ -5,8 +5,12 @@ import io.worthi.VerifyEmail.response.VerifyResponse
 import io.worthi.WebAPI.WebAPI
 import io.worthi.chooseInterest.response.AddInterestsResponse
 import io.worthi.chooseInterest.response.GetInterestsResponse
+import io.worthi.feedScreen.fragments.feeds.response.GetCampainsResponse
+import io.worthi.feedScreen.fragments.interactions.response.GetInteractionResponse
 import io.worthi.feedScreen.fragments.profile.response.LogoutResponse
 import io.worthi.feedScreen.fragments.profile.response.SendFeedbackResponse
+import io.worthi.feedScreen.fragments.profile.response.UserResponse
+import io.worthi.forgotPassword.response.ResetPasswordResponse
 import io.worthi.loginscreen.LoginScreen
 import io.worthi.loginscreen.response.LoginResponse
 import io.worthi.yourInfo.response.YourInfoResponse
@@ -25,6 +29,11 @@ class Controller {
     var getInterestAPI : GetInterestAPI? = null
     var addInterestAPI : AddInterestAPI?=null
     var sendFeedbackAPI : SendFeedbackAPI?=null
+    var userAPI : UserAPI? = null
+    var cashOutAPI:CashOutAPI? = null
+    var forgotPassAPI:ForgotPassAPI? = null
+    var getCampainsAPI:GetCampainsAPI?=null
+    var getInteractionAPI:GetInteractionAPI? = null
 
     fun Controller(login: LoginAPI)
     {
@@ -32,10 +41,11 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(logout:LogoutAPI,sendFeedback: SendFeedbackAPI)
+    fun Controller(logout:LogoutAPI,sendFeedback: SendFeedbackAPI,user: UserAPI)
     {
         logoutAPI = logout
         sendFeedbackAPI = sendFeedback
+        userAPI = user
         webAPI = WebAPI()
     }
 
@@ -61,6 +71,31 @@ class Controller {
     {
         getInterestAPI = getInterest
         addInterestAPI = addInterest
+        webAPI = WebAPI()
+    }
+
+    fun Controller(user: UserAPI,cashOut: CashOutAPI)
+    {
+        userAPI = user
+        cashOutAPI = cashOut
+        webAPI = WebAPI()
+    }
+
+    fun Controller(forgotPass: ForgotPassAPI)
+    {
+        forgotPassAPI = forgotPass
+        webAPI = WebAPI()
+    }
+
+    fun Controller(getCampains: GetCampainsAPI)
+    {
+        getCampainsAPI = getCampains
+        webAPI = WebAPI()
+    }
+
+    fun Controller(getInteraction: GetInteractionAPI)
+    {
+        getInteractionAPI = getInteraction
         webAPI = WebAPI()
     }
 
@@ -205,6 +240,91 @@ class Controller {
         })
     }
 
+    fun User(token: String,accept: String)
+    {
+        webAPI?.api?.User(token,accept)?.enqueue(object :Callback<UserResponse>
+        {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                userAPI?.onUserSuccessAPI(response)
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                userAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
+    fun CashOut(token: String,accept: String,cash:String)
+    {
+        webAPI?.api?.Cashout(token,accept,cash)?.enqueue(object :Callback<UserResponse>
+        {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                cashOutAPI?.onCashoutSuccessAPI(response)
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                cashOutAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
+    fun Resetpassword(accept:String,email: String)
+    {
+        webAPI?.api?.ForgotPassword(accept,email)?.enqueue(object :Callback<ArrayList<ResetPasswordResponse>>
+        {
+            override fun onResponse(
+                call: Call<ArrayList<ResetPasswordResponse>>,
+                response: Response<java.util.ArrayList<ResetPasswordResponse>>
+            ) {
+                forgotPassAPI?.onForgotSuccessAPI(response)
+            }
+
+            override fun onFailure(call: Call<ArrayList<ResetPasswordResponse>>, t: Throwable) {
+                forgotPassAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
+    fun GetCampains(token: String,accept: String)
+    {
+        webAPI?.api?.GetCampains(token,accept)?.enqueue(object :Callback<ArrayList<GetCampainsResponse>>
+        {
+            override fun onResponse(
+                call: Call<ArrayList<GetCampainsResponse>>,
+                response: Response<ArrayList<GetCampainsResponse>>
+            ) {
+                getCampainsAPI?.onGetCampainsSuccessAPI(response)
+            }
+
+            override fun onFailure(call: Call<ArrayList<GetCampainsResponse>>, t: Throwable) {
+                getCampainsAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
+    fun GetInteractions(token: String,accept: String)
+    {
+        webAPI?.api?.GetIntractions(token,accept)?.enqueue(object :Callback<ArrayList<GetInteractionResponse>>
+        {
+            override fun onResponse(
+                call: Call<ArrayList<GetInteractionResponse>>,
+                response: Response<ArrayList<GetInteractionResponse>>
+            ) {
+                getInteractionAPI?.onGetInteractionAPI(response)
+            }
+
+            override fun onFailure(call: Call<ArrayList<GetInteractionResponse>>, t: Throwable) {
+                getInteractionAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
+
     interface LoginAPI {
         fun onLoginSuccess(response: Response<LoginResponse>)
         fun onError(error:String)
@@ -241,6 +361,31 @@ class Controller {
 
     interface SendFeedbackAPI {
         fun onSendfeedbackAPI (successs: Response<ArrayList<SendFeedbackResponse>>)
+        fun onError(error: String)
+    }
+
+    interface UserAPI {
+        fun onUserSuccessAPI (success:Response<UserResponse>)
+        fun onError(error: String)
+    }
+
+    interface CashOutAPI {
+        fun onCashoutSuccessAPI(successs: Response<UserResponse>)
+        fun onError(error: String)
+    }
+
+    interface ForgotPassAPI {
+        fun onForgotSuccessAPI(success:Response<ArrayList<ResetPasswordResponse>>)
+        fun onError(error:String)
+    }
+
+    interface GetCampainsAPI {
+        fun onGetCampainsSuccessAPI(success:Response<ArrayList<GetCampainsResponse>>)
+        fun onError(error: String)
+    }
+
+    interface GetInteractionAPI {
+        fun onGetInteractionAPI(success:Response<ArrayList<GetInteractionResponse>>)
         fun onError(error: String)
     }
 }

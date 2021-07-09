@@ -7,10 +7,10 @@ import android.widget.FrameLayout
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.worthi.R
-import io.worthi.feedScreen.fragments.FeedFrag
-import io.worthi.feedScreen.fragments.InteractionFrag
+import io.worthi.feedScreen.fragments.feeds.FeedFrag
+import io.worthi.feedScreen.fragments.interactions.InteractionFrag
 import io.worthi.feedScreen.fragments.profile.ProfileFrag
-import io.worthi.feedScreen.fragments.RewardsFrag
+import io.worthi.feedScreen.fragments.rewards.RewardsFrag
 
 class FeedScreen : AppCompatActivity() {
 
@@ -31,21 +31,21 @@ class FeedScreen : AppCompatActivity() {
             return@setOnNavigationItemSelectedListener when (item.itemId) {
                 R.id.feed -> {
                     val transaction = fragmentManager.beginTransaction()
-                    transaction.replace(R.id.container,FeedFrag())
+                    transaction.replace(R.id.container, FeedFrag())
                     transaction.addToBackStack(null)
                     transaction.commit()
                     true
                 }
                 R.id.interaction -> {
                     val transaction = fragmentManager.beginTransaction()
-                    transaction.replace(R.id.container,InteractionFrag())
+                    transaction.replace(R.id.container, InteractionFrag())
                     //transaction.addToBackStack(null)
                     transaction.commit()
                     true
                 }
                 R.id.rewards -> {
                     val transaction = fragmentManager.beginTransaction()
-                    transaction.replace(R.id.container,RewardsFrag())
+                    transaction.replace(R.id.container, RewardsFrag())
                     //transaction.addToBackStack(null)
                     transaction.commit()
                     true
@@ -73,7 +73,7 @@ class FeedScreen : AppCompatActivity() {
         bottomnavigation = findViewById(R.id.bottomnavigation)
 
         val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.container,FeedFrag())
+        transaction.replace(R.id.container, FeedFrag())
         transaction.commit()
     }
 }

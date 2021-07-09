@@ -204,10 +204,16 @@ class SignUpScreen : BaseClass(), Controller.SignUpAPI {
                     getString(R.string.close_up)
                 )
             }
+        }else if (response.code()==400){
+            utility.relative_snackbar(
+                window.currentFocus,
+               "User already exist",
+                getString(R.string.close_up)
+            )
         }else {
             utility.relative_snackbar(
                 window.currentFocus,
-                response.message(),
+                "User already exist",
                 getString(R.string.close_up)
             )
         }

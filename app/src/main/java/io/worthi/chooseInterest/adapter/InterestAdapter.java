@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
@@ -72,6 +73,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
             background = itemView.findViewById(R.id.background);
             interesttv = itemView.findViewById(R.id.interesttv);
             checkbox = itemView.findViewById(R.id.checkbox);
+
         }
     }
 }

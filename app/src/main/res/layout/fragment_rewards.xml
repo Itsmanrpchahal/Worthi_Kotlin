@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".feedScreen.fragments.RewardsFrag">
+    android:id="@+id/parent_rewards"
+    tools:context=".feedScreen.fragments.rewards.RewardsFrag">
 
 
     <ScrollView
@@ -35,6 +36,7 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/reward"
                     android:layout_width="160dp"
                     android:layout_height="140dp"
                     android:layout_gravity="center_horizontal"
@@ -82,6 +84,7 @@
             </TextView>
 
             <Button
+                android:id="@+id/cashoutbt"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="40dp"

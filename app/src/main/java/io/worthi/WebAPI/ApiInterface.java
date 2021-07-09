@@ -6,8 +6,13 @@ import io.worthi.SignUp.response.SignUpResponse;
 import io.worthi.VerifyEmail.response.VerifyResponse;
 import io.worthi.chooseInterest.response.AddInterestsResponse;
 import io.worthi.chooseInterest.response.GetInterestsResponse;
+import io.worthi.feedScreen.fragments.feeds.response.GetCampainsResponse;
+import io.worthi.feedScreen.fragments.interactions.response.GetInteractionResponse;
 import io.worthi.feedScreen.fragments.profile.response.LogoutResponse;
 import io.worthi.feedScreen.fragments.profile.response.SendFeedbackResponse;
+import io.worthi.feedScreen.fragments.profile.response.UserResponse;
+import io.worthi.forgotPassword.ForgotPasswrod;
+import io.worthi.forgotPassword.response.ResetPasswordResponse;
 import io.worthi.loginscreen.response.LoginResponse;
 import io.worthi.yourInfo.response.YourInfoResponse;
 import retrofit2.Call;
@@ -82,5 +87,38 @@ public interface ApiInterface {
             @Header("cookie") String cookie,
             @Header("Accept") String Accept,
             @Field("feedback") String feedback
+    );
+
+    @GET("user")
+    Call<UserResponse> User(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept
+    );
+
+    @FormUrlEncoded
+    @POST("cashout")
+    Call<UserResponse> Cashout(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept,
+            @Field("amount") String amount
+    );
+
+    @FormUrlEncoded
+    @POST("reset-password")
+    Call<ArrayList<ResetPasswordResponse>> ForgotPassword(
+            @Header("Accept") String Accept,
+            @Field("email") String email
+    );
+
+    @GET("get-campaigns")
+    Call<ArrayList<GetCampainsResponse>> GetCampains(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept
+    );
+
+    @GET("get-interacted-campaigns")
+    Call<ArrayList<GetInteractionResponse>> GetIntractions(
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept
     );
 }

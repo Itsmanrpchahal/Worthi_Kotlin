@@ -19,6 +19,7 @@ import io.worthi.Utilities.Constants
 import io.worthi.Utilities.Utility
 import io.worthi.controller.Controller
 import io.worthi.feedScreen.FeedScreen
+import io.worthi.forgotPassword.ForgotPasswrod
 import io.worthi.loginscreen.response.LoginResponse
 import retrofit2.Response
 
@@ -28,6 +29,7 @@ class LoginScreen : BaseClass() ,Controller.LoginAPI{
     private lateinit var signUptext: TextView
     private lateinit var email: EditText
     private lateinit var password: EditText
+    private lateinit var forgotpassword: TextView
     private lateinit var signInbt: LinearLayout
     private lateinit var utility: Utility
     private lateinit var pd: ProgressDialog
@@ -86,6 +88,8 @@ class LoginScreen : BaseClass() ,Controller.LoginAPI{
         signUptext.setOnClickListener {
             startActivity(Intent(this, SignUpScreen::class.java))
         }
+
+        forgotpassword.setOnClickListener { startActivity(Intent(this,ForgotPasswrod::class.java)) }
     }
 
     fun init() {
@@ -103,6 +107,7 @@ class LoginScreen : BaseClass() ,Controller.LoginAPI{
         email = findViewById(R.id.email)
         password = findViewById(R.id.password)
         signInbt = findViewById(R.id.signInbt)
+        forgotpassword = findViewById(R.id.forgotpassword)
     }
 
     private fun hideKeyboard() {
@@ -131,6 +136,12 @@ class LoginScreen : BaseClass() ,Controller.LoginAPI{
                )
            }
 
+       }else {
+           utility.relative_snackbar(
+               window.currentFocus,
+              "Invalid email/password",
+               getString(R.string.close_up)
+           )
        }
     }
 
