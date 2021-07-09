@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +42,9 @@ public class GetCampainsAdapter extends RecyclerView.Adapter<GetCampainsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull GetCampainsAdapter.ViewHolder holder, int position) {
-        Glide.with(context).load(getCampainsResponses.get(position).getCallToAction().getCallToActionImage()).placeholder(R.drawable.logo).into(holder.image);
+
+        Picasso.get().load(getCampainsResponses.get(position).getCallToAction().getCallToActionImage()).into(holder.image);
+//        Glide.with(context).load(getCampainsResponses.get(position).getCallToAction().getCallToActionImage()).placeholder(R.drawable.logo).into(holder.image);
         holder.title.setText(getCampainsResponses.get(position).getName());
         holder.subtile.setText(getCampainsResponses.get(position).getDescription());
 

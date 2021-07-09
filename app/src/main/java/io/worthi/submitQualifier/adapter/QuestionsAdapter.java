@@ -46,7 +46,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         holder.yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
                 holder.yes.setBackgroundResource(R.drawable.themeborder);
                 holder.either.setBackgroundResource(R.color.white);
                 holder.no.setBackgroundResource(R.color.white);

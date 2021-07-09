@@ -114,7 +114,7 @@ class ExploreScreen : BaseClass(),Controller.GetCampainsAPI {
 //                } catch (e: Exception) {
 //                    e.printStackTrace()
 //                }
-                Picasso.get().load("http://i.imgur.com/DvpvklR.png").resize(100,100).into(image);
+                Picasso.get().load(success.body()?.get(pos.toInt())?.addDisplay?.addDisplayImage).into(image);
                 title.setText(success.body()?.get(pos.toInt())!!.name)
                 subtitle.setText(success.body()?.get(pos.toInt())!!.description)
                 questiontv.setText(success.body()?.get(pos.toInt())!!.questions.size.toString()+" of "+success.body()?.get(pos.toInt())!!.questions.size.toString()+" Questions")
