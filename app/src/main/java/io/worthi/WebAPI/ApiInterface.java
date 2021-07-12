@@ -14,6 +14,7 @@ import io.worthi.feedScreen.fragments.profile.response.UserResponse;
 import io.worthi.forgotPassword.ForgotPasswrod;
 import io.worthi.forgotPassword.response.ResetPasswordResponse;
 import io.worthi.loginscreen.response.LoginResponse;
+import io.worthi.submitQualifier.model.qAndA;
 import io.worthi.yourInfo.response.YourInfoResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -121,4 +122,15 @@ public interface ApiInterface {
             @Header("cookie") String cookie,
             @Header("Accept") String Accept
     );
+
+
+    @FormUrlEncoded
+    @POST("user-interaction-campaigns")
+    Call<GetInteractionResponse> SubmitAnswers (
+            @Header("cookie") String cookie,
+            @Header("Accept") String Accept,
+            @Field("campaign_id") String campaign_id,
+            @Field("qAndA") String qAndA
+    );
+
 }

@@ -34,6 +34,7 @@ class Controller {
     var forgotPassAPI:ForgotPassAPI? = null
     var getCampainsAPI:GetCampainsAPI?=null
     var getInteractionAPI:GetInteractionAPI? = null
+    var sendAnswersAPI:SendAnswersAPI? = null
 
     fun Controller(login: LoginAPI)
     {
@@ -90,6 +91,14 @@ class Controller {
     fun Controller(getCampains: GetCampainsAPI)
     {
         getCampainsAPI = getCampains
+
+        webAPI = WebAPI()
+    }
+
+    fun Controller(getCampains: GetCampainsAPI,sendAnswers: SendAnswersAPI)
+    {
+        getCampainsAPI = getCampains
+        sendAnswersAPI = sendAnswers
         webAPI = WebAPI()
     }
 
@@ -324,6 +333,25 @@ class Controller {
         })
     }
 
+    fun SendAnswers(token: String,accept: String,campaign_id:String,qAndA:String)
+    {
+        webAPI?.api?.SubmitAnswers(token,accept,campaign_id,qAndA)?.enqueue(object :Callback<GetInteractionResponse>
+        {
+            override fun onResponse(
+                call: Call<GetInteractionResponse>,
+                response: Response<GetInteractionResponse>
+            ) {
+                sendAnswersAPI?.onSendAnswersSuccess(response)
+            }
+
+            override fun onFailure(call: Call<GetInteractionResponse>, t: Throwable) {
+                sendAnswersAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
+
 
     interface LoginAPI {
         fun onLoginSuccess(response: Response<LoginResponse>)
@@ -386,6 +414,11 @@ class Controller {
 
     interface GetInteractionAPI {
         fun onGetInteractionAPI(success:Response<ArrayList<GetInteractionResponse>>)
+        fun onError(error: String)
+    }
+
+    interface SendAnswersAPI {
+        fun onSendAnswersSuccess(success:Response<GetInteractionResponse>)
         fun onError(error: String)
     }
 }

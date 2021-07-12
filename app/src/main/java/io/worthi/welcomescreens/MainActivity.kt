@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -93,7 +95,13 @@ class MainActivity : AppCompatActivity() {
     var viewListener: OnPageChangeListener = object : OnPageChangeListener {
         override fun onPageScrolled(i: Int, v: Float, i1: Int) {}
         override fun onPageSelected(i: Int) {
-
+            Log.d("index",""+i)
+            if (i==3)
+            {
+                nextbt!!.visibility = View.VISIBLE
+            } else{
+                nextbt!!.visibility = View.INVISIBLE
+            }
         }
 
         override fun onPageScrollStateChanged(i: Int) {
@@ -111,6 +119,8 @@ class MainActivity : AppCompatActivity() {
                 } else if (curr == lastReal) {
                     currentPage++
                     if (currentPage == 3) {
+
+                        Log.d("index",""+currentPage)
                       //  startActivity(Intent(applicationContext, Join_us::class.java))
 
                         finish()

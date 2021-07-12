@@ -20,7 +20,9 @@ import io.worthi.Utilities.Constants
 import io.worthi.Utilities.Utility
 import io.worthi.controller.Controller
 import io.worthi.feedScreen.fragments.feeds.response.GetCampainsResponse
+import io.worthi.submitQualifier.IF.GetQandA_IF
 import io.worthi.submitQualifier.SubmitQualifierScreen
+import io.worthi.submitQualifier.model.qAndA
 import retrofit2.Response
 import java.io.FileOutputStream
 
@@ -44,6 +46,7 @@ class ExploreScreen : BaseClass(),Controller.GetCampainsAPI {
         setContentView(R.layout.activity_explore_screen)
 
         init()
+
         getCamps = ArrayList()
         listeners()
     }
@@ -54,8 +57,12 @@ class ExploreScreen : BaseClass(),Controller.GetCampainsAPI {
         }
 
         takequalifier.setOnClickListener {
-            startActivity(Intent(this,SubmitQualifierScreen::class.java).putExtra("pos",pos))
+            startActivity(Intent(this,SubmitQualifierScreen::class.java).putExtra("pos",pos).putExtra("campainID",getCamps.get(pos.toInt()).id.toString()))
         }
+    }
+
+    companion object {
+        var getqandaIf : GetQandA_IF? = null
     }
 
     fun init()
