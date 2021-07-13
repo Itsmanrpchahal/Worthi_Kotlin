@@ -38,6 +38,7 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
     private lateinit var pd: ProgressDialog
     private lateinit var controller: Controller
     private lateinit var dialog: Dialog
+    private lateinit var username : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -149,6 +150,7 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
         email = view.findViewById(R.id.email)
         price = view.findViewById(R.id.price)
         interest = view.findViewById(R.id.interest)
+        username = view.findViewById(R.id.username)
     }
 
     override fun onLogoutSuccess(response: Response<LogoutResponse>) {
@@ -205,6 +207,7 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
                 name.setText(success.body()?.name)
                 email.setText(success.body()?.email)
                 price.setText(success.body()?.balance.toString()+"$")
+                username.setText(success.body()?.name)
                // interest.setText(success.body()?.interests?.interests?.size!!)
             } else {
                 utility.relative_snackbar(

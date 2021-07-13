@@ -1,6 +1,7 @@
 package io.worthi.submitQualifier.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,6 +93,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         holder.answer.setLayoutManager(layoutManager);
         AnswerAdapter answerAdapter =new AnswerAdapter(context,getCampainsResponses,position);
         holder.answer.setAdapter(answerAdapter);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ID",""+getCampainsResponses.get(position).getId());
+            }
+        });
 
     }
 

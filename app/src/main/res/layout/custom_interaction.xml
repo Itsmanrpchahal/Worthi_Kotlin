@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/black"
                 android:text="Back to feed"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:textAllCaps="false"
                 android:layout_margin="16dp">
@@ -80,6 +81,7 @@
                 android:background="@color/black"
                 android:text="Back to feed"
                 android:textAllCaps="false"
+                android:visibility="gone"
                 android:layout_margin="16dp">
 
             </Button>

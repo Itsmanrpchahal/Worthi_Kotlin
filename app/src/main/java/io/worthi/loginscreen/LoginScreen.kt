@@ -138,7 +138,7 @@ class LoginScreen : BaseClass() ,Controller.LoginAPI{
 
        }else {
            utility.relative_snackbar(
-               window.currentFocus,
+               window.decorView,
               "Invalid email/password",
                getString(R.string.close_up)
            )

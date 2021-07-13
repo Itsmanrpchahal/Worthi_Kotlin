@@ -16,7 +16,9 @@
         android:roundIcon="@mipmap/appicon"
         android:supportsRtl="true"
         android:theme="@style/Translucent">
-        <activity android:name=".submitQualifier.SubmitQualifierScreen"></activity>
+        <activity android:name=".submitQualifier.SorryScreen"></activity>
+        <activity android:name=".submitQualifier.CongratulationScreen" />
+        <activity android:name=".submitQualifier.SubmitQualifierScreen" />
         <activity android:name=".explore.ExploreScreen" />
         <activity android:name=".forgotPassword.ForgotPasswrod" />
         <activity android:name=".shareapp.ShareAppScreen" />

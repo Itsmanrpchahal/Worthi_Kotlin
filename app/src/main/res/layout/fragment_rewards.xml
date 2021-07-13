@@ -41,7 +41,7 @@
                     android:layout_height="140dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/themeborder"
-                    android:text="5"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     android:gravity="center"

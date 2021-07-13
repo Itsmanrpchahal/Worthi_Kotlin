@@ -1,5 +1,9 @@
 package io.worthi.WebAPI;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import io.worthi.SignUp.response.SignUpResponse;
@@ -15,8 +19,10 @@ import io.worthi.forgotPassword.ForgotPasswrod;
 import io.worthi.forgotPassword.response.ResetPasswordResponse;
 import io.worthi.loginscreen.response.LoginResponse;
 import io.worthi.submitQualifier.model.qAndA;
+import io.worthi.submitQualifier.response.AnswersResponse;
 import io.worthi.yourInfo.response.YourInfoResponse;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -124,13 +130,12 @@ public interface ApiInterface {
     );
 
 
-    @FormUrlEncoded
+
     @POST("user-interaction-campaigns")
-    Call<GetInteractionResponse> SubmitAnswers (
+    Call<AnswersResponse> SubmitAnswers (
             @Header("cookie") String cookie,
             @Header("Accept") String Accept,
-            @Field("campaign_id") String campaign_id,
-            @Field("qAndA") String qAndA
+            @Body JsonObject jsonObject
     );
 
 }

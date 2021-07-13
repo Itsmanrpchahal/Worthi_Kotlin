@@ -1,6 +1,7 @@
 package io.worthi.submitQualifier
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,6 +11,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import io.worthi.Constant.BaseClass
 import io.worthi.R
 import io.worthi.Utilities.Constants
@@ -19,9 +23,11 @@ import io.worthi.feedScreen.fragments.feeds.response.GetCampainsResponse
 import io.worthi.feedScreen.fragments.interactions.response.GetInteractionResponse
 import io.worthi.submitQualifier.IF.getQA_IF
 import io.worthi.submitQualifier.adapter.QuestionsAdapter
+import io.worthi.submitQualifier.response.AnswersResponse
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Response
+
 
 class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,Controller.SendAnswersAPI{
 
@@ -37,8 +43,13 @@ class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,
     private lateinit var ques: ArrayList<String>
     private lateinit var answer: ArrayList<String>
     private lateinit var answers: ArrayList<String>
-    val jsonArray = JSONArray()
+    private lateinit var SelectedAnswer : ArrayList<String>
+    private lateinit var SelectedQuestions : ArrayList<String>
+    val jsonArray = JsonArray()
     var jsonObject2 = JSONObject()
+    val jsonObject = JSONObject()
+    val jsonArray1 = JSONArray()
+    val jsonObject3 = JsonObject()
     private lateinit var submit: Button
 
 
@@ -67,6 +78,7 @@ class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,
     fun init() {
         pos = intent.getStringExtra("pos").toString()
         campainID = intent.getStringExtra("campainID").toString()
+        Log.d("campainID",""+campainID)
         utility = Utility()
         pd = ProgressDialog(this)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -100,8 +112,13 @@ class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,
                 pd.show()
                 pd.setContentView(R.layout.loading)
 
-                controller.SendAnswers("jwt=" + getStringVal(Constants.TOKEN), "application/json",campainID,
-                    jsonArray.toString()
+
+                var jsonObject = JSONObject()
+
+
+                var jsonParser = JsonParser()
+
+                controller.SendAnswers("jwt=" + getStringVal(Constants.TOKEN), "application/json",jsonObject3
                 )
             } else {
                 utility.relative_snackbar(
@@ -159,9 +176,37 @@ class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,
         }
     }
 
-    override fun onSendAnswersSuccess(success: Response<GetInteractionResponse>) {
+    override fun onSendAnswersSuccess(success: Response<AnswersResponse>) {
         pd.dismiss()
 
+        if (success.isSuccessful)
+        {
+            if (success.code() == 201)
+            {
+                if (success.body()?.isPassed==true)
+                {
+                    startActivity(Intent(this,CongratulationScreen::class.java).putExtra("url",getCampains.get(pos.toInt()).callToAction.buttonLink.toString()).putExtra("button",getCampains.get(pos.toInt()).callToAction.buttonTitle.toString()))
+                    finish()
+                }else {
+                    startActivity(Intent(this,SorryScreen::class.java))
+                    finish()
+                }
+
+
+            }   else if (success.code()==401){
+                utility.relative_snackbar(
+                    window.decorView, "jwt expire",
+                    getString(R.string.close_up)
+                )
+            }
+
+        }else {
+            utility.relative_snackbar(
+                window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
     }
 
     override fun onError(error: String) {
@@ -175,9 +220,19 @@ class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,
 
 
 
-    override fun getQAIF(jsonObject: JSONObject) {
-        jsonArray.put(jsonObject)
+    override fun getQAIF(jsonObject: JsonObject) {
+       jsonArray.add(jsonObject)
+
         Log.d("waheguru",""+jsonArray)
+//        jsonObject.put("campaign_id",campainID)
+//
+//        jsonArray1.put(jsonObject)
+
+        jsonObject3.add("qAndA",jsonArray)
+        jsonObject3.addProperty("campaign_id",campainID)
+        Log.d("jsonData",""+jsonObject3)
+//                jsonObject.putOpt("qAndA",jsonObject)
+
 
 
     }

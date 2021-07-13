@@ -206,7 +206,7 @@ this.callToAction = callToAction;
         private String password;
         @SerializedName("balance")
         @Expose
-        private Integer balance;
+        private Double balance;
         @SerializedName("created_at")
         @Expose
         private String createdAt;
@@ -265,11 +265,11 @@ this.callToAction = callToAction;
             this.password = password;
         }
 
-        public Integer getBalance() {
+        public Double getBalance() {
             return balance;
         }
 
-        public void setBalance(Integer balance) {
+        public void setBalance(Double balance) {
             this.balance = balance;
         }
 

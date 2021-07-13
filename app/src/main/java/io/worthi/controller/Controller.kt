@@ -1,5 +1,6 @@
 package io.worthi.controller
 
+import com.google.gson.JsonObject
 import io.worthi.SignUp.response.SignUpResponse
 import io.worthi.VerifyEmail.response.VerifyResponse
 import io.worthi.WebAPI.WebAPI
@@ -13,7 +14,9 @@ import io.worthi.feedScreen.fragments.profile.response.UserResponse
 import io.worthi.forgotPassword.response.ResetPasswordResponse
 import io.worthi.loginscreen.LoginScreen
 import io.worthi.loginscreen.response.LoginResponse
+import io.worthi.submitQualifier.response.AnswersResponse
 import io.worthi.yourInfo.response.YourInfoResponse
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -333,21 +336,20 @@ class Controller {
         })
     }
 
-    fun SendAnswers(token: String,accept: String,campaign_id:String,qAndA:String)
+    fun SendAnswers(token: String,accept: String,campaign_id:JsonObject)
     {
-        webAPI?.api?.SubmitAnswers(token,accept,campaign_id,qAndA)?.enqueue(object :Callback<GetInteractionResponse>
+        webAPI?.api?.SubmitAnswers(token,accept, campaign_id)?.enqueue(object :Callback<AnswersResponse>
         {
             override fun onResponse(
-                call: Call<GetInteractionResponse>,
-                response: Response<GetInteractionResponse>
+                call: Call<AnswersResponse>,
+                response: Response<AnswersResponse>
             ) {
                 sendAnswersAPI?.onSendAnswersSuccess(response)
             }
 
-            override fun onFailure(call: Call<GetInteractionResponse>, t: Throwable) {
+            override fun onFailure(call: Call<AnswersResponse>, t: Throwable) {
                 sendAnswersAPI?.onError(t.message!!)
             }
-
         })
     }
 
@@ -418,7 +420,7 @@ class Controller {
     }
 
     interface SendAnswersAPI {
-        fun onSendAnswersSuccess(success:Response<GetInteractionResponse>)
+        fun onSendAnswersSuccess(success:Response<AnswersResponse>)
         fun onError(error: String)
     }
 }

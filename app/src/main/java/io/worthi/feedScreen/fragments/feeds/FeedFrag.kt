@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.worthi.Constant.BaseFrag
@@ -29,6 +30,7 @@ class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI{
     private lateinit var pd: ProgressDialog
     private lateinit var controller: Controller
     private lateinit var getcampainsrecycler: RecyclerView
+    private lateinit var balancetv : TextView
     private lateinit var getCamps : ArrayList<GetCampainsResponse>
 
 
@@ -46,7 +48,7 @@ class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI{
 
     private fun init(view: View) {
         getcampainsrecycler = view.findViewById(R.id.getcampainsrecycler)
-
+        balancetv = view.findViewById(R.id.balancetv)
         utility = Utility()
         pd = ProgressDialog(context)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -82,6 +84,10 @@ class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI{
                 {
                     getCamps.add(success.body()?.get(i)!!)
                     Log.d("getCamps",""+getCamps.size)
+                }
+                if (success.body()!!.size>0)
+                {
+                    balancetv.setText(success.body()!!.get(0).user.balance.toString())
                 }
 
                 val layoutManager = GridLayoutManager(context, 1)

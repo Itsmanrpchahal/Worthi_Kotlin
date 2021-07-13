@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,8 +65,8 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
             holder.textView.setBackgroundResource(R.color.white);
         }
 
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
+        JsonArray jsonArray = new JsonArray();
+        JsonObject jsonObject = new JsonObject();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,15 +79,11 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
 
                     Sanswers.add(answers.get(selectedPosition));
 
-                try {
-                    jsonObject.put("question_id",questions.get(pos).getId());
-                    jsonObject.put("answer",answers.get(selectedPosition));
-                    jsonArray.put(jsonObject);
-                    Log.d("JSON",""+jsonObject);
-                    SubmitQualifierScreen.Companion.getGetQA_IF().getQAIF(jsonObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                jsonObject.addProperty("question_id",questions.get(pos).getId());
+                jsonObject.addProperty("answer",answers.get(selectedPosition));
+                jsonArray.add(jsonObject);
+                Log.d("JSON",""+jsonObject);
+                SubmitQualifierScreen.Companion.getGetQA_IF().getQAIF(jsonObject);
                 Log.d("Answers",pos +"  "+Sanswers);
             }
         });
