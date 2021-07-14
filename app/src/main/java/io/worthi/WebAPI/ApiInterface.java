@@ -92,7 +92,6 @@ public interface ApiInterface {
     @POST("feedback")
     Call<ArrayList<SendFeedbackResponse>> feedback(
             @Header("cookie") String cookie,
-            @Header("Accept") String Accept,
             @Field("feedback") String feedback
     );
 

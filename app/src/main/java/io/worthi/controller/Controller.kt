@@ -234,9 +234,9 @@ class Controller {
        })
     }
 
-    fun SendFeedback(token: String,accept: String,feedback:String)
+    fun SendFeedback(token: String,feedback:String)
     {
-        webAPI?.api?.feedback(token,accept,feedback)?.enqueue(object :Callback<ArrayList<SendFeedbackResponse>>
+        webAPI?.api?.feedback(token,feedback)?.enqueue(object :Callback<ArrayList<SendFeedbackResponse>>
         {
             override fun onResponse(
                 call: Call<ArrayList<SendFeedbackResponse>>,

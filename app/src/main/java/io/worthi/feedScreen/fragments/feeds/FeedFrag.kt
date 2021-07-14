@@ -37,8 +37,8 @@ class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI{
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View?{
+        // In flate the layout for this fragment
         var  view:View
         view = inflater.inflate(R.layout.fragment_feed, container, false)
         getCamps = ArrayList()

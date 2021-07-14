@@ -101,7 +101,6 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
 
                             controller.SendFeedback(
                                 "jwt=" + getStringVal(Constants.TOKEN),
-                                "application/json",
                                 feedbacket.text.toString()
                             )
                         } else {
