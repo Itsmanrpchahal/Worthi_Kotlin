@@ -16,14 +16,14 @@ import io.worthi.Constant.BaseFrag
 import io.worthi.R
 import io.worthi.Utilities.Constants
 import io.worthi.Utilities.Utility
-import io.worthi.chooseInterest.adapter.InterestAdapter
 import io.worthi.controller.Controller
 import io.worthi.feedScreen.fragments.feeds.adapter.GetCampainsAdapter
 import io.worthi.feedScreen.fragments.feeds.response.GetCampainsResponse
+import io.worthi.feedScreen.fragments.feeds.response.UserResponse
 import retrofit2.Response
 
 
-class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI{
+class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI,Controller.UserAPI{
 
 
     private lateinit var utility: Utility
@@ -57,13 +57,15 @@ class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI{
         pd!!.setCancelable(false)
 
         controller = Controller()
-        controller.Controller(this)
+        controller.Controller(this,this)
+
         if (utility.isConnectingToInternet(context)) {
 
             pd.show()
             pd.setContentView(R.layout.loading)
 
             controller.GetCampains("jwt="+getStringVal(Constants.TOKEN),"application/json")
+            controller.User("jwt=" + getStringVal(Constants.TOKEN), "application/json")
         } else {
             utility.relative_snackbar(
                 requireActivity().window.decorView,
@@ -85,10 +87,10 @@ class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI{
                     getCamps.add(success.body()?.get(i)!!)
                     Log.d("getCamps",""+getCamps.size)
                 }
-                if (success.body()!!.size>0)
-                {
-                    balancetv.setText(success.body()!!.get(0).user.balance.toString())
-                }
+//                if (success.body()!!.size>0)
+//                {
+//                    balancetv.setText(success.body()!!.get(0).user.balance.toString())
+//                }
 
                 val layoutManager = GridLayoutManager(context, 1)
                 getcampainsrecycler.setLayoutManager(layoutManager)
@@ -111,6 +113,29 @@ class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI{
         }
 
 
+    }
+
+    override fun onUserSuccessAPI(success: Response<UserResponse>) {
+        if (success.isSuccessful) {
+            if (success.code() == 200) {
+
+                balancetv.setText(success.body()?.balance.toString())
+
+                // interest.setText(success.body()?.interests?.interests?.size!!)
+            } else {
+                utility.relative_snackbar(
+                    activity?.window?.decorView,
+                    "Bad Request",
+                    getString(R.string.close_up)
+                )
+            }
+        } else {
+            utility.relative_snackbar(
+                activity?.window?.decorView,
+                "Bad Request",
+                getString(R.string.close_up)
+            )
+        }
     }
 
     override fun onError(error: String) {

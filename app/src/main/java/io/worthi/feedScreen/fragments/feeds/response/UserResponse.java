@@ -1,4 +1,4 @@
-package io.worthi.feedScreen.fragments.profile.response;
+package io.worthi.feedScreen.fragments.feeds.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -162,23 +162,14 @@ public void setProfile(Profile profile) {
 this.profile = profile;
 }
 
-    public class Interests {
+    public class Role {
 
         @SerializedName("id")
         @Expose
         private Integer id;
-        @SerializedName("interests")
+        @SerializedName("name")
         @Expose
-        private List<String> interests = null;
-        @SerializedName("created_at")
-        @Expose
-        private String createdAt;
-        @SerializedName("updated_at")
-        @Expose
-        private String updatedAt;
-        @SerializedName("deleted_at")
-        @Expose
-        private Object deletedAt;
+        private String name;
 
         public Integer getId() {
             return id;
@@ -188,36 +179,12 @@ this.profile = profile;
             this.id = id;
         }
 
-        public List<String> getInterests() {
-            return interests;
+        public String getName() {
+            return name;
         }
 
-        public void setInterests(List<String> interests) {
-            this.interests = interests;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
-
-        public String getUpdatedAt() {
-            return updatedAt;
-        }
-
-        public void setUpdatedAt(String updatedAt) {
-            this.updatedAt = updatedAt;
-        }
-
-        public Object getDeletedAt() {
-            return deletedAt;
-        }
-
-        public void setDeletedAt(Object deletedAt) {
-            this.deletedAt = deletedAt;
+        public void setName(String name) {
+            this.name = name;
         }
 
     }
@@ -304,14 +271,23 @@ this.profile = profile;
 
     }
 
-    public class Role {
+    public class Interests {
 
         @SerializedName("id")
         @Expose
         private Integer id;
-        @SerializedName("name")
+        @SerializedName("interests")
         @Expose
-        private String name;
+        private List<String> interests = null;
+        @SerializedName("created_at")
+        @Expose
+        private String createdAt;
+        @SerializedName("updated_at")
+        @Expose
+        private String updatedAt;
+        @SerializedName("deleted_at")
+        @Expose
+        private Object deletedAt;
 
         public Integer getId() {
             return id;
@@ -321,12 +297,36 @@ this.profile = profile;
             this.id = id;
         }
 
-        public String getName() {
-            return name;
+        public List<String> getInterests() {
+            return interests;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setInterests(List<String> interests) {
+            this.interests = interests;
+        }
+
+        public String getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
+        }
+
+        public String getUpdatedAt() {
+            return updatedAt;
+        }
+
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
+        }
+
+        public Object getDeletedAt() {
+            return deletedAt;
+        }
+
+        public void setDeletedAt(Object deletedAt) {
+            this.deletedAt = deletedAt;
         }
 
     }

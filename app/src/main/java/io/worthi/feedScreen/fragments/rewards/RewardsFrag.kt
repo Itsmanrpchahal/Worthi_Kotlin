@@ -4,7 +4,6 @@ import android.app.ProgressDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import io.worthi.R
 import io.worthi.Utilities.Constants
 import io.worthi.Utilities.Utility
 import io.worthi.controller.Controller
-import io.worthi.feedScreen.fragments.profile.response.UserResponse
+import io.worthi.feedScreen.fragments.feeds.response.UserResponse
 import retrofit2.Response
 
 

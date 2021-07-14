@@ -33,6 +33,7 @@
             </androidx.appcompat.widget.Toolbar>
 
             <ImageView
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_margin="16dp"
@@ -64,8 +65,54 @@
                 android:textAllCaps="false">
 
             </Button>
+
+            <Button
+                android:id="@+id/backtofeed"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@color/black"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:text="Back to feed"
+                android:textAllCaps="false">
+
+            </Button>
         </LinearLayout>
     </ScrollView>
 
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/backweb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_keyboard_backspace_24"
+                android:backgroundTint="@android:color/transparent">
+
+            </ImageButton>
+
+
+        </Toolbar>
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+        </WebView>
+    </LinearLayout>
 
 </RelativeLayout>

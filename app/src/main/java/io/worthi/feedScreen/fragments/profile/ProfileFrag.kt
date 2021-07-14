@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -16,11 +15,10 @@ import io.worthi.R
 import io.worthi.Utilities.Constants
 import io.worthi.Utilities.Utility
 import io.worthi.controller.Controller
+import io.worthi.feedScreen.fragments.feeds.response.UserResponse
 import io.worthi.feedScreen.fragments.profile.response.LogoutResponse
 import io.worthi.feedScreen.fragments.profile.response.SendFeedbackResponse
-import io.worthi.feedScreen.fragments.profile.response.UserResponse
 import io.worthi.loginscreen.LoginScreen
-import io.worthi.shareapp.ShareAppScreen
 import retrofit2.Response
 
 
@@ -55,7 +53,23 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
 
     private fun listeners() {
         shareapp.setOnClickListener {
-            startActivity(Intent(context, ShareAppScreen::class.java))
+            try {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Worthi")
+                var shareMessage = "\nLet me recommend you this application\n\n"
+                shareMessage =
+                    """
+                    ${shareMessage}https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_IN&gl=US
+                    
+                    
+                    """.trimIndent()
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+                startActivity(Intent.createChooser(shareIntent, "choose one"))
+            } catch (e: Exception) {
+                //e.toString();
+            }
+
         }
 
         logout.setOnClickListener {
@@ -172,28 +186,35 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
         }
     }
 
-    override fun onSendfeedbackAPI(successs: Response<ArrayList<SendFeedbackResponse>>) {
+    override fun onSendfeedbackAPI(successs: Response<SendFeedbackResponse>) {
         pd.dismiss()
         if (successs.isSuccessful) {
-            utility.relative_snackbar(
-                activity?.window?.decorView,
-                "Feedback sent",
-                getString(R.string.close_up)
-            )
-//            if (successs.code()==200||successs.code()==201||successs.code()==202)
-//            {
-//
-//            } else {
-//                utility.relative_snackbar(
-//                    activity?.window?.decorView,
-//                    "Bad Request",
-//                    getString(R.string.close_up)
-//                )
-//            }
-        } else {
+            if (successs.body()!!.success==true)
+            {
+                dialog.dismiss()
+                utility.relative_snackbar(
+                    activity?.window?.decorView,
+                    "Feedback sent",
+                    getString(R.string.close_up)
+                )
+            }else {
+                dialog.dismiss()
+                utility.relative_snackbar(
+                    activity?.window?.decorView,
+                    successs.message(),
+                    getString(R.string.close_up)
+                )
+            }
+        } else if (successs.code()==401){
             utility.relative_snackbar(
                 activity?.window?.decorView,
                 "Bad Request",
+                getString(R.string.close_up)
+            )
+        }else {
+            utility.relative_snackbar(
+                activity?.window?.decorView,
+                successs.message(),
                 getString(R.string.close_up)
             )
         }

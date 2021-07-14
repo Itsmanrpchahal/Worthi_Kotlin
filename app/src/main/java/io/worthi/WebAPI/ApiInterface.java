@@ -2,8 +2,6 @@ package io.worthi.WebAPI;
 
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import io.worthi.SignUp.response.SignUpResponse;
@@ -11,14 +9,12 @@ import io.worthi.VerifyEmail.response.VerifyResponse;
 import io.worthi.chooseInterest.response.AddInterestsResponse;
 import io.worthi.chooseInterest.response.GetInterestsResponse;
 import io.worthi.feedScreen.fragments.feeds.response.GetCampainsResponse;
+import io.worthi.feedScreen.fragments.feeds.response.UserResponse;
 import io.worthi.feedScreen.fragments.interactions.response.GetInteractionResponse;
 import io.worthi.feedScreen.fragments.profile.response.LogoutResponse;
 import io.worthi.feedScreen.fragments.profile.response.SendFeedbackResponse;
-import io.worthi.feedScreen.fragments.profile.response.UserResponse;
-import io.worthi.forgotPassword.ForgotPasswrod;
 import io.worthi.forgotPassword.response.ResetPasswordResponse;
 import io.worthi.loginscreen.response.LoginResponse;
-import io.worthi.submitQualifier.model.qAndA;
 import io.worthi.submitQualifier.response.AnswersResponse;
 import io.worthi.yourInfo.response.YourInfoResponse;
 import retrofit2.Call;
@@ -26,10 +22,8 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.HEAD;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -90,7 +84,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("feedback")
-    Call<ArrayList<SendFeedbackResponse>> feedback(
+    Call<SendFeedbackResponse> feedback(
             @Header("cookie") String cookie,
             @Field("feedback") String feedback
     );

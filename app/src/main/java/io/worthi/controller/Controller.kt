@@ -7,20 +7,17 @@ import io.worthi.WebAPI.WebAPI
 import io.worthi.chooseInterest.response.AddInterestsResponse
 import io.worthi.chooseInterest.response.GetInterestsResponse
 import io.worthi.feedScreen.fragments.feeds.response.GetCampainsResponse
+import io.worthi.feedScreen.fragments.feeds.response.UserResponse
 import io.worthi.feedScreen.fragments.interactions.response.GetInteractionResponse
 import io.worthi.feedScreen.fragments.profile.response.LogoutResponse
 import io.worthi.feedScreen.fragments.profile.response.SendFeedbackResponse
-import io.worthi.feedScreen.fragments.profile.response.UserResponse
 import io.worthi.forgotPassword.response.ResetPasswordResponse
-import io.worthi.loginscreen.LoginScreen
 import io.worthi.loginscreen.response.LoginResponse
 import io.worthi.submitQualifier.response.AnswersResponse
 import io.worthi.yourInfo.response.YourInfoResponse
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.StringReader
 
 class Controller {
     var webAPI: WebAPI? = null
@@ -94,6 +91,15 @@ class Controller {
     fun Controller(getCampains: GetCampainsAPI)
     {
         getCampainsAPI = getCampains
+
+
+        webAPI = WebAPI()
+    }
+
+    fun Controller(getCampains: GetCampainsAPI,user: UserAPI)
+    {
+        getCampainsAPI = getCampains
+        userAPI = user
 
         webAPI = WebAPI()
     }
@@ -236,16 +242,16 @@ class Controller {
 
     fun SendFeedback(token: String,feedback:String)
     {
-        webAPI?.api?.feedback(token,feedback)?.enqueue(object :Callback<ArrayList<SendFeedbackResponse>>
+        webAPI?.api?.feedback(token,feedback)?.enqueue(object :Callback<SendFeedbackResponse>
         {
             override fun onResponse(
-                call: Call<ArrayList<SendFeedbackResponse>>,
-                response: Response<ArrayList<SendFeedbackResponse>>
+                call: Call<SendFeedbackResponse>,
+                response: Response<SendFeedbackResponse>
             ) {
                 sendFeedbackAPI?.onSendfeedbackAPI(response)
             }
 
-            override fun onFailure(call: Call<ArrayList<SendFeedbackResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<SendFeedbackResponse>, t: Throwable) {
                 sendFeedbackAPI?.onError(t.message!!)
             }
 
@@ -390,7 +396,7 @@ class Controller {
     }
 
     interface SendFeedbackAPI {
-        fun onSendfeedbackAPI (successs: Response<ArrayList<SendFeedbackResponse>>)
+        fun onSendfeedbackAPI (successs: Response<SendFeedbackResponse>)
         fun onError(error: String)
     }
 
@@ -423,4 +429,5 @@ class Controller {
         fun onSendAnswersSuccess(success:Response<AnswersResponse>)
         fun onError(error: String)
     }
+
 }

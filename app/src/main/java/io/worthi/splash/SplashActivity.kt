@@ -21,6 +21,7 @@ import io.worthi.Constant.BaseClass
 import io.worthi.R
 import io.worthi.Utilities.Constants
 import io.worthi.feedScreen.FeedScreen
+import io.worthi.loginscreen.LoginScreen
 import io.worthi.welcomescreens.MainActivity
 
 
@@ -69,23 +70,42 @@ requestStoragePermission()
                     if (report.areAllPermissionsGranted()) {
                         perclear = true
 
-                        if (!getStringVal(Constants.TOKEN).equals(""))
+                        if (getStringVal(Constants.WELCOMECHECK).equals("1"))
                         {
-                            startActivity(Intent(this@SplashActivity,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                            finish()
+                            if (!getStringVal(Constants.TOKEN).equals(""))
+                            {
+                                startActivity(Intent(this@SplashActivity,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                                finish()
+                            }else {
+                                startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                                finish()
+                            }
                         }else {
                             startActivity(Intent(this@SplashActivity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
                             finish()
                         }
+
+
                         // Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
                     } else {
+                        if (getStringVal(Constants.WELCOMECHECK).equals("1"))
+                        {
+                            if (!getStringVal(Constants.TOKEN).equals(""))
+                            {
+                                startActivity(Intent(this@SplashActivity,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                                finish()
+                            }else {
+                                startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                                finish()
+                            }
+                        }else {
+                            startActivity(Intent(this@SplashActivity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                            finish()
+                        }
                     }
 
                     // check for permanent denial of any permission
-                    if (report.isAnyPermissionPermanentlyDenied) {
-                        // show alert dialog navigating to Settings
-                        showSettingsDialog()
-                    }
+
                 }
 
                 override fun onPermissionRationaleShouldBeShown(

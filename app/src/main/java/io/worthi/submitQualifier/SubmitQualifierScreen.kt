@@ -43,12 +43,7 @@ class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,
     private lateinit var ques: ArrayList<String>
     private lateinit var answer: ArrayList<String>
     private lateinit var answers: ArrayList<String>
-    private lateinit var SelectedAnswer : ArrayList<String>
-    private lateinit var SelectedQuestions : ArrayList<String>
     val jsonArray = JsonArray()
-    var jsonObject2 = JSONObject()
-    val jsonObject = JSONObject()
-    val jsonArray1 = JSONArray()
     val jsonObject3 = JsonObject()
     private lateinit var submit: Button
 
@@ -109,17 +104,30 @@ class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,
         submit.setOnClickListener {
             if (utility.isConnectingToInternet(this)) {
 
-                pd.show()
-                pd.setContentView(R.layout.loading)
 
 
+                val json = JsonArray()
+                val c = jsonArray.size()
+                Log.d("jonSIze",""+c)
                 var jsonObject = JSONObject()
 
 
                 var jsonParser = JsonParser()
-
-                controller.SendAnswers("jwt=" + getStringVal(Constants.TOKEN), "application/json",jsonObject3
+                if (jsonArray.size()>0)
+                {
+                    pd.show()
+                    pd.setContentView(R.layout.loading)
+                    controller.SendAnswers("jwt=" + getStringVal(Constants.TOKEN), "application/json",jsonObject3
                 )
+                }else {
+                    utility.relative_snackbar(
+                        window.decorView,
+                        "Select atleast one question",
+                        getString(R.string.close_up)
+                    )
+                }
+
+
             } else {
                 utility.relative_snackbar(
                     window.decorView,
@@ -185,7 +193,7 @@ class SubmitQualifierScreen : BaseClass(), Controller.GetCampainsAPI, getQA_IF ,
             {
                 if (success.body()?.isPassed==true)
                 {
-                    startActivity(Intent(this,CongratulationScreen::class.java).putExtra("url",getCampains.get(pos.toInt()).callToAction.buttonLink.toString()).putExtra("button",getCampains.get(pos.toInt()).callToAction.buttonTitle.toString()))
+                    startActivity(Intent(this,CongratulationScreen::class.java).putExtra("url",getCampains.get(pos.toInt()).callToAction.buttonLink.toString()).putExtra("button",getCampains.get(pos.toInt()).callToAction.buttonTitle.toString()).putExtra("pos",pos.toString()))
                     finish()
                 }else {
                     startActivity(Intent(this,SorryScreen::class.java))

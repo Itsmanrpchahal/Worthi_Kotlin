@@ -34,7 +34,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Absolute Network"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="26dp"
             android:layout_margin="16sp"

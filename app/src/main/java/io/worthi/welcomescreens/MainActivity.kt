@@ -13,23 +13,25 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import io.worthi.Constant.BaseClass
 import io.worthi.R
+import io.worthi.Utilities.Constants
 import io.worthi.loginscreen.LoginScreen
 import io.worthi.welcomescreens.adapter.SliderAdapter
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseClass() {
 
     var layout: RelativeLayout? = null
     var nextbt: Button? = null
     var viewPager: ViewPager? = null
-    lateinit var tab_layout : TabLayout
+    lateinit var tab_layout: TabLayout
     private val dotsLayout: LinearLayout? = null
 
     private val MULTIPLE_PERMISSIONS = 10
     var sliderAdapter: SliderAdapter? = null
     var currentPage = 0
-    var mBackPressCount:Int = 0
+    var mBackPressCount: Int = 0
     var permissions = arrayOf<String>(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-        sliderAdapter =  SliderAdapter(this)
+        sliderAdapter = SliderAdapter(this)
         viewPager?.setAdapter(sliderAdapter)
         viewPager?.addOnPageChangeListener(viewListener)
         tab_layout.setupWithViewPager(viewPager)
@@ -63,15 +65,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun listeners() {
         nextbt?.setOnClickListener {
-            startActivity(Intent(this,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            startActivity(
+                Intent(this, LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            )
             finish()
+            setStringVal(Constants.WELCOMECHECK, "1")
+
         }
     }
 
-    fun init()
-    {
-        viewPager =findViewById(R.id.viewPager);
+    fun init() {
+        viewPager = findViewById(R.id.viewPager);
         nextbt = findViewById(R.id.nextbt)
         tab_layout = findViewById(R.id.tab_layout)
     }
@@ -95,18 +100,17 @@ class MainActivity : AppCompatActivity() {
     var viewListener: OnPageChangeListener = object : OnPageChangeListener {
         override fun onPageScrolled(i: Int, v: Float, i1: Int) {}
         override fun onPageSelected(i: Int) {
-            Log.d("index",""+i)
-            if (i==3)
-            {
+            Log.d("index", "" + i)
+            if (i == 3) {
                 nextbt!!.visibility = View.VISIBLE
-            } else{
+            } else {
                 nextbt!!.visibility = View.INVISIBLE
             }
         }
 
         override fun onPageScrollStateChanged(i: Int) {
             if (currentPage == 0) {
-               // mSkip!!.text = "NEXT"
+                // mSkip!!.text = "NEXT"
             }
             if (currentPage == 1) {
                 //mSkip!!.text = "NEXT"
@@ -120,8 +124,8 @@ class MainActivity : AppCompatActivity() {
                     currentPage++
                     if (currentPage == 3) {
 
-                        Log.d("index",""+currentPage)
-                      //  startActivity(Intent(applicationContext, Join_us::class.java))
+                        Log.d("index", "" + currentPage)
+                        //  startActivity(Intent(applicationContext, Join_us::class.java))
 
                         finish()
                     }
@@ -129,7 +133,6 @@ class MainActivity : AppCompatActivity() {
                         //mSkip!!.text = "Start"
                     }
                 }
-
 
 
             }

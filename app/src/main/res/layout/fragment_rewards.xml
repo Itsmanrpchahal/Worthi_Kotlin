@@ -23,8 +23,8 @@
                 android:layout_height="wrap_content"
                 android:text="Cashout"
                 android:textColor="@color/black"
-                android:textSize="26dp"
-                android:textStyle="normal">
+                android:textSize="26sp"
+                android:textStyle="bold">
 
             </TextView>
 
