@@ -25,7 +25,38 @@ private Boolean isVerified;
 @SerializedName("balance")
 @Expose
 private Double balance;
-@SerializedName("created_at")
+@SerializedName("totalEarnedBalance")
+@Expose
+private Double totalEarnedBalance;
+@SerializedName("interactedFeedsCount")
+@Expose
+private String interactedFeedsCount;
+
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
+
+    public Double getTotalEarnedBalance() {
+        return totalEarnedBalance;
+    }
+
+    public void setTotalEarnedBalance(Double totalEarnedBalance) {
+        this.totalEarnedBalance = totalEarnedBalance;
+    }
+
+    public String getInteractedFeedsCount() {
+        return interactedFeedsCount;
+    }
+
+    public void setInteractedFeedsCount(String interactedFeedsCount) {
+        this.interactedFeedsCount = interactedFeedsCount;
+    }
+
+    @SerializedName("created_at")
 @Expose
 private String createdAt;
 @SerializedName("updated_at")

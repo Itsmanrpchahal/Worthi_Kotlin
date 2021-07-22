@@ -86,8 +86,8 @@
                         android:layout_height="wrap_content"
                         android:text="Remaining Ads:"
                         android:textAlignment="textEnd"
+                        android:textSize="10sp"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="12dp"
                         android:textColor="@android:color/darker_gray">
 
                     </TextView>
@@ -102,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:text="10"
                             android:layout_marginLeft="16dp"
-                            android:textSize="20sp"
+                            android:textSize="14sp"
                             android:textColor="@color/themecolor">
 
                         </TextView>
@@ -111,7 +111,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" out of "
-                            android:textSize="20sp"
+                            android:textSize="14sp"
                             android:layout_gravity="center_vertical"
                             android:textColor="@android:color/darker_gray">
 
@@ -121,7 +121,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="10"
-                            android:textSize="22sp"
+                            android:textSize="16sp"
                             android:textColor="@color/black">
 
                         </TextView>
@@ -132,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:text="10 new ads everyday"
                         android:textAlignment="textEnd"
+                        android:textSize="10sp"
                         android:layout_marginLeft="16dp"
                         android:textColor="@android:color/darker_gray">
 

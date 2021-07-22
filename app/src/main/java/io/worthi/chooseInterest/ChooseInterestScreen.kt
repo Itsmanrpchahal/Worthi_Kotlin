@@ -32,6 +32,7 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
     private lateinit var pd: ProgressDialog
     private lateinit var controller: Controller
     private lateinit var listview : RecyclerView
+    private lateinit var count : TextView
     private lateinit var interets : ArrayList<GetInterestsResponse>
     var sparseBooleanArray: SparseBooleanArray? = null
     private lateinit var interestID : ArrayList<String>
@@ -54,7 +55,7 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
                 pd.show()
                 pd.setContentView(R.layout.loading)
 
-                controller.AddInterest("jwt="+getStringVal(Constants.S_TOKEN),"application/json",interestValue)
+                controller.AddInterest("jwt="+getStringVal(Constants.TOKEN),"application/json",interestValue)
             } else {
                 utility.relative_snackbar(
                     window.currentFocus,
@@ -68,6 +69,7 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
     fun init() {
         continuefeed = findViewById(R.id.continuefeed)
         listview = findViewById(R.id.listview)
+        count = findViewById(R.id.count)
 
         utility = Utility()
         pd = ProgressDialog(this)
@@ -83,7 +85,7 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
             pd.show()
             pd.setContentView(R.layout.loading)
 
-            controller.GetInterest("jwt="+getStringVal(Constants.S_TOKEN),"application/json")
+            controller.GetInterest("jwt="+getStringVal(Constants.TOKEN),"application/json")
         } else {
             utility.relative_snackbar(
                 window.currentFocus,
@@ -147,7 +149,7 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
             {
                 startActivity(Intent(this, FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
                 finish()
-                setStringVal(Constants.TOKEN,getStringVal(Constants.S_TOKEN))
+                setStringVal(Constants.TOKEN,getStringVal(Constants.TOKEN))
             } else {
                 utility.relative_snackbar(
                     window.decorView,
@@ -182,14 +184,23 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
             }
 
         } else {
+            if (interestID.contains(id))
+            {
+                interestID.remove(pos)
+            }else
+            {
                 interestID.add(id.toString())
-            interestValue = TextUtils.join(",",interestID)
+                interestValue = TextUtils.join(",",interestID)
+                Log.d("interestValue",interestValue)
+            }
+
 
         }
 
 
         if (interestID.size>0)
         {
+            count.text = "Choose 5 out of "+interets.size
             continuefeed.isEnabled = true
             continuefeed.setBackgroundColor(resources.getColor(R.color.black))
         } else {

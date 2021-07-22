@@ -73,7 +73,7 @@ class YourInfoScreen : BaseClass(), Controller.YourInfoAPI {
                         pd.show()
                         pd.setContentView(R.layout.loading)
 
-                        controller.YourInfo("jwt="+getStringVal(Constants.S_TOKEN),"application/json",ageTV, genderTV, location.text.toString())
+                        controller.YourInfo("jwt="+getStringVal(Constants.TOKEN),"application/json",ageTV, genderTV, location.text.toString())
                     } else {
                         utility.relative_snackbar(
                             window.currentFocus,

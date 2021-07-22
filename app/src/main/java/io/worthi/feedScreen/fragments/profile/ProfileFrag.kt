@@ -226,9 +226,9 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
             if (success.code() == 200) {
                 name.setText(success.body()?.name)
                 email.setText(success.body()?.email)
-                price.setText(success.body()?.balance.toString()+"$")
+                price.setText(success.body()?.totalEarnedBalance.toString()+"$")
                 username.setText(success.body()?.name)
-               // interest.setText(success.body()?.interests?.interests?.size!!)
+                interest.setText(success.body()?.interactedFeedsCount!!)
             } else {
                 utility.relative_snackbar(
                     activity?.window?.decorView,

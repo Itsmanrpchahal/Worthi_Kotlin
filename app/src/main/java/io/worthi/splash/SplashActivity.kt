@@ -1,8 +1,11 @@
 package io.worthi.splash
 
 import android.Manifest
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -20,12 +23,19 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import io.worthi.Constant.BaseClass
 import io.worthi.R
 import io.worthi.Utilities.Constants
+import io.worthi.Utilities.Utility
+import io.worthi.VerifyEmail.VerifyEmailScreen
+import io.worthi.chooseInterest.ChooseInterestScreen
+import io.worthi.controller.Controller
 import io.worthi.feedScreen.FeedScreen
+import io.worthi.feedScreen.fragments.feeds.response.UserResponse
 import io.worthi.loginscreen.LoginScreen
 import io.worthi.welcomescreens.MainActivity
+import io.worthi.yourInfo.YourInfoScreen
+import retrofit2.Response
 
 
-class SplashActivity : BaseClass() {
+class SplashActivity : BaseClass() ,Controller.UserAPI{
 
     var permissions = arrayOf<String>(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -36,6 +46,9 @@ class SplashActivity : BaseClass() {
         Manifest.permission.READ_CONTACTS
     )
     var perclear = false
+    private lateinit var utility: Utility
+    private lateinit var pd: ProgressDialog
+    private lateinit var controller: Controller
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,23 +59,56 @@ class SplashActivity : BaseClass() {
         )
 
        // methodRequiresPermission()
+        init()
 
-        Handler(Looper.getMainLooper()).postDelayed({
+        if (getStringVal(Constants.WELCOMECHECK).equals("1"))
+        {
+            if (!getStringVal(Constants.TOKEN).equals(""))
+            {
+                if (utility.isConnectingToInternet(this@SplashActivity)) {
+                    controller.User("jwt="+getStringVal(Constants.TOKEN),"application/json")
+                } else {
+                    utility.relative_snackbar(
+                        window.currentFocus,
+                        getString(R.string.nointernet),
+                        getString(R.string.close_up)
+                    )
+                }
 
-requestStoragePermission()
 
-        }, 3000)
+            }else {
+                startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                finish()
+            }
+        }else {
+            startActivity(Intent(this@SplashActivity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            finish()
+        }
+//        Handler(Looper.getMainLooper()).postDelayed({
+//
+////requestStoragePermission()
+//
+//
+//        }, 3000)
     }
 
+    fun init()
+    {
+        utility = Utility()
+        pd = ProgressDialog(this)
+        pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        pd!!.isIndeterminate = true
+        pd!!.setCancelable(false)
+
+        controller = Controller()
+        controller.Controller(this)
+    }
 
     private fun requestStoragePermission() {
         Dexter.withActivity(this)
             .withPermissions(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+
             )
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
@@ -70,20 +116,7 @@ requestStoragePermission()
                     if (report.areAllPermissionsGranted()) {
                         perclear = true
 
-                        if (getStringVal(Constants.WELCOMECHECK).equals("1"))
-                        {
-                            if (!getStringVal(Constants.TOKEN).equals(""))
-                            {
-                                startActivity(Intent(this@SplashActivity,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                                finish()
-                            }else {
-                                startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                                finish()
-                            }
-                        }else {
-                            startActivity(Intent(this@SplashActivity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                            finish()
-                        }
+
 
 
                         // Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
@@ -92,8 +125,15 @@ requestStoragePermission()
                         {
                             if (!getStringVal(Constants.TOKEN).equals(""))
                             {
-                                startActivity(Intent(this@SplashActivity,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                                finish()
+                                if (utility.isConnectingToInternet(this@SplashActivity)) {
+                                    controller.User("jwt="+getStringVal(Constants.TOKEN),"application/json")
+                                } else {
+                                    utility.relative_snackbar(
+                                        window.currentFocus,
+                                        getString(R.string.nointernet),
+                                        getString(R.string.close_up)
+                                    )
+                                }
                             }else {
                                 startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
                                 finish()
@@ -150,6 +190,37 @@ requestStoragePermission()
         val uri: Uri = Uri.fromParts("package", packageName, null)
         intent.data = uri
         startActivityForResult(intent, 101)
+    }
+
+    override fun onUserSuccessAPI(success: Response<UserResponse>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+
+        {
+            if (success.body()?.isVerified==false)
+            {
+                startActivity(Intent(this@SplashActivity,VerifyEmailScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                finish()
+            } else if (success.body()?.profile==null || success.body()?.profile!!.equals(null))
+            {
+                startActivity(Intent(this@SplashActivity,YourInfoScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                finish()
+            } else if (success.body()?.interests==null || success.body()?.interests!!.equals(null))
+            {
+                startActivity(Intent(this@SplashActivity, ChooseInterestScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                finish()
+            } else {
+                startActivity(Intent(this@SplashActivity,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                finish()
+            }
+
+        } else {
+
+        }
+    }
+
+    override fun onError(error: String) {
+        TODO("Not yet implemented")
     }
 
 }

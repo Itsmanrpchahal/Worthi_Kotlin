@@ -20,6 +20,7 @@ import io.worthi.Utilities.Constants
 import io.worthi.Utilities.Utility
 import io.worthi.VerifyEmail.VerifyEmailScreen
 import io.worthi.controller.Controller
+import io.worthi.loginscreen.LoginScreen
 import retrofit2.Response
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -38,6 +39,7 @@ class SignUpScreen : BaseClass(), Controller.SignUpAPI {
     private lateinit var pd: ProgressDialog
     private lateinit var controller: Controller
     private lateinit var signuptv : TextView
+    private lateinit var logintext : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +123,10 @@ class SignUpScreen : BaseClass(), Controller.SignUpAPI {
 
             }
 
+            logintext.setOnClickListener {
+                startActivity(Intent(this,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            }
+
         }
         val languages = resources.getStringArray(R.array.countryCodes)
         val adapter = ArrayAdapter(
@@ -162,6 +168,7 @@ class SignUpScreen : BaseClass(), Controller.SignUpAPI {
         retypepassword = findViewById(R.id.retypepassword)
         phonenumber = findViewById(R.id.phonenumber)
         signuptv = findViewById(R.id.signuptv)
+        logintext = findViewById(R.id.logintext)
         utility = Utility()
         pd = ProgressDialog(this)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -195,21 +202,21 @@ class SignUpScreen : BaseClass(), Controller.SignUpAPI {
                         VerifyEmailScreen::class.java
                     ).putExtra("phonenumber",countrycode+phonenumber.text.toString())
                 )
-                setStringVal(Constants.S_TOKEN,response.body()?.token)
+                setStringVal(Constants.TOKEN,response.body()?.token)
 
+            }else if (response.code()==422){
+                utility.relative_snackbar(
+                    window.currentFocus,
+                    response.message(),
+                    getString(R.string.close_up)
+                )
             } else {
                 utility.relative_snackbar(
                     window.currentFocus,
-                    "User already exist",
+                    response.code().toString(),
                     getString(R.string.close_up)
                 )
             }
-        }else if (response.code()==400){
-            utility.relative_snackbar(
-                window.currentFocus,
-               response.message(),
-                getString(R.string.close_up)
-            )
         }else {
             utility.relative_snackbar(
                 window.currentFocus,

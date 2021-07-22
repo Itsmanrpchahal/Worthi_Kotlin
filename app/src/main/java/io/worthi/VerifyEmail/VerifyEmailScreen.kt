@@ -85,8 +85,8 @@ class VerifyEmailScreen : BaseClass(), Controller.VerifyEmailAPI {
                     hideKeyboard()
                     pd.show()
                     pd.setContentView(R.layout.loading)
-                    Log.d("token",""+getStringVal(Constants.S_TOKEN))
-                    controller.Verify("jwt="+getStringVal(Constants.S_TOKEN),"application/json",phonenumber, code.toString())
+                    Log.d("token",""+getStringVal(Constants.TOKEN))
+                    controller.Verify("jwt="+getStringVal(Constants.TOKEN),"application/json",phonenumber, code.toString())
 
                 } else {
                     utility.relative_snackbar(

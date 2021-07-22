@@ -17,13 +17,17 @@ import io.worthi.R
 import io.worthi.SignUp.SignUpScreen
 import io.worthi.Utilities.Constants
 import io.worthi.Utilities.Utility
+import io.worthi.VerifyEmail.VerifyEmailScreen
+import io.worthi.chooseInterest.ChooseInterestScreen
 import io.worthi.controller.Controller
 import io.worthi.feedScreen.FeedScreen
+import io.worthi.feedScreen.fragments.feeds.response.UserResponse
 import io.worthi.forgotPassword.ForgotPasswrod
 import io.worthi.loginscreen.response.LoginResponse
+import io.worthi.yourInfo.YourInfoScreen
 import retrofit2.Response
 
-class LoginScreen : BaseClass() ,Controller.LoginAPI{
+class LoginScreen : BaseClass() ,Controller.LoginAPI,Controller.UserAPI{
 
     private lateinit var signIn: LinearLayout
     private lateinit var signUptext: TextView
@@ -101,7 +105,7 @@ class LoginScreen : BaseClass() ,Controller.LoginAPI{
         pd!!.setCancelable(false)
 
         controller = Controller()
-        controller.Controller(this)
+        controller.Controller(this,this)
         signIn = findViewById(R.id.signIn)
         signUptext = findViewById(R.id.signUptext)
         email = findViewById(R.id.email)
@@ -120,29 +124,95 @@ class LoginScreen : BaseClass() ,Controller.LoginAPI{
     }
 
     override fun onLoginSuccess(response: Response<LoginResponse>) {
-        pd.dismiss()
+
        if (response.isSuccessful)
        {
            if (response.code()==201)
            {
-               setStringVal(Constants.TOKEN,response.body()?.token)
-               startActivity(Intent(this,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-               finish()
-           } else if(response.code()==401) {
-               utility.relative_snackbar(
-                   window.currentFocus,
-                   "Invalid email/password",
-                   getString(R.string.close_up)
+               if (utility.isConnectingToInternet(this)) {
+                   setStringVal(Constants.TOKEN, response.body()?.token)
+                   controller.User("jwt="+getStringVal(Constants.TOKEN),"application/json")
+               } else {
+                   utility.relative_snackbar(
+                       window.currentFocus,
+                       getString(R.string.nointernet),
+                       getString(R.string.close_up)
+                   )
+               }
+
+           }   else if(response.code()==401) {
+               pd.dismiss()
+
+               startActivity(
+                   Intent(
+                       this,
+                       FeedScreen::class.java
+                   ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                       .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                )
+               finish()
            }
+//           }   else if(response.code()==401)
+//           {
+//               pd.dismiss()
+//               utility.relative_snackbar(
+//                   window.currentFocus,
+//                   response.code().toString(),
+//                   getString(R.string.close_up)
+//               )
+//           }
+
 
        }else {
+           pd.dismiss()
            utility.relative_snackbar(
                window.decorView,
-              "Invalid email/password",
+               response.code().toString(),
                getString(R.string.close_up)
            )
        }
+    }
+
+    override fun onUserSuccessAPI(success: Response<UserResponse>) {
+
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+             if (success.code()==200)
+             {
+                 if (success.body()?.isVerified==false)
+                 {
+                     startActivity(Intent(this, VerifyEmailScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                     finish()
+                 } else if (success.body()?.profile==null || success.body()?.profile!!.equals(null))
+                 {
+                     startActivity(Intent(this,YourInfoScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                     finish()
+                 } else if (success.body()?.interests==null || success.body()?.interests!!.equals(null))
+                 {
+                     startActivity(Intent(this, ChooseInterestScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                     finish()
+                 } else {
+                     startActivity(Intent(this,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                     finish()
+                 }
+
+
+             } else if (success.code()==401) {
+                 utility.relative_snackbar(
+                     window.decorView,
+                     "Bad Request",
+                     getString(R.string.close_up)
+                 )
+             }
+        }else {
+            utility.relative_snackbar(
+                window.decorView,
+                success.code().toString(),
+                getString(R.string.close_up)
+            )
+        }
+
     }
 
     override fun onError(error: String) {

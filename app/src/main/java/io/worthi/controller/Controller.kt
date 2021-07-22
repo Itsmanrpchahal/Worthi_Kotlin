@@ -36,9 +36,17 @@ class Controller {
     var getInteractionAPI:GetInteractionAPI? = null
     var sendAnswersAPI:SendAnswersAPI? = null
 
-    fun Controller(login: LoginAPI)
+
+    fun Controller(user: UserAPI)
+    {
+        userAPI = user
+        webAPI = WebAPI()
+    }
+
+    fun Controller(login: LoginAPI,user: UserAPI)
     {
         loginAPI = login
+        userAPI  =user
         webAPI = WebAPI()
     }
 
