@@ -131,7 +131,7 @@ class YourInfoScreen : BaseClass(), Controller.YourInfoAPI {
             ) {
                 // your code here
                 Log.d("soinner", "" + languages[position])
-                genderTV = languages[position]
+                genderTV = languages1[position]
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {

@@ -123,10 +123,11 @@ class SignUpScreen : BaseClass(), Controller.SignUpAPI {
 
             }
 
-            logintext.setOnClickListener {
-                startActivity(Intent(this,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
-            }
 
+
+        }
+        logintext.setOnClickListener {
+            startActivity(Intent(this,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
         }
         val languages = resources.getStringArray(R.array.countryCodes)
         val adapter = ArrayAdapter(
@@ -207,7 +208,7 @@ class SignUpScreen : BaseClass(), Controller.SignUpAPI {
             }else if (response.code()==422){
                 utility.relative_snackbar(
                     window.currentFocus,
-                    response.message(),
+                    "User with given email already exist",
                     getString(R.string.close_up)
                 )
             } else {

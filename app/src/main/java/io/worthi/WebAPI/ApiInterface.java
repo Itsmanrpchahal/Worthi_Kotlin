@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 
 import io.worthi.SignUp.response.SignUpResponse;
+import io.worthi.VerifyEmail.response.ResendOTP;
 import io.worthi.VerifyEmail.response.VerifyResponse;
 import io.worthi.chooseInterest.response.AddInterestsResponse;
 import io.worthi.chooseInterest.response.GetInterestsResponse;
@@ -129,6 +130,13 @@ public interface ApiInterface {
             @Header("cookie") String cookie,
             @Header("Accept") String Accept,
             @Body JsonObject jsonObject
+    );
+
+    @FormUrlEncoded
+    @POST("resend-otp")
+    Call<ResendOTP> ResendOTP (
+            @Header("cookie") String cookie,
+            @Field("phone_number") String phone_number
     );
 
 }

@@ -1,6 +1,7 @@
 package io.worthi.chooseInterest
 
 import android.app.ProgressDialog
+import android.content.ContentResolver.wrap
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -12,6 +13,7 @@ import android.util.SparseBooleanArray
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.graphics.Insets.wrap
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.worthi.Constant.BaseClass
@@ -23,7 +25,9 @@ import io.worthi.chooseInterest.response.AddInterestsResponse
 import io.worthi.chooseInterest.response.GetInterestsResponse
 import io.worthi.controller.Controller
 import io.worthi.feedScreen.FeedScreen
+import org.apache.commons.lang3.StringUtils
 import retrofit2.Response
+import rx.observers.Subscribers.wrap
 
 
 class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelectedInterest_IF ,Controller.AddInterestAPI{
@@ -55,6 +59,10 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
                 pd.show()
                 pd.setContentView(R.layout.loading)
 
+                interestValue = TextUtils.join(",",interestID)
+                var step1 = StringUtils.join(interestID,"\",\"")
+                var step2 = StringUtils.wrap(step1,"\"")
+                Log.d("interestValue",""+step2)
                 controller.AddInterest("jwt="+getStringVal(Constants.TOKEN),"application/json",interestValue)
             } else {
                 utility.relative_snackbar(
@@ -119,6 +127,7 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
                 for ( i in 0 until  success.body()!!.size)
                 {
                     interets.add(success.body()?.get(i)!!)
+
                     Log.d("interests",""+interets.size)
                 }
                 val layoutManager = GridLayoutManager(this, 1)
@@ -190,11 +199,7 @@ class ChooseInterestScreen : BaseClass(), Controller.GetInterestAPI, GetSelected
             }else
             {
                 interestID.add(id.toString())
-                interestValue = TextUtils.join(",",interestID)
-                Log.d("interestValue",interestValue)
             }
-
-
         }
 
 

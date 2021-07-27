@@ -228,7 +228,11 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
                 email.setText(success.body()?.email)
                 price.setText(success.body()?.totalEarnedBalance.toString()+"$")
                 username.setText(success.body()?.name)
-                interest.setText(success.body()?.interactedFeedsCount!!)
+                if (success.body()?.interactedFeedsCount!=null)
+                {
+                    interest.setText(success.body()?.interactedFeedsCount!!)
+                }
+
             } else {
                 utility.relative_snackbar(
                     activity?.window?.decorView,

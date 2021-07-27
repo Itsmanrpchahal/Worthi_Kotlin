@@ -2,6 +2,7 @@ package io.worthi.controller
 
 import com.google.gson.JsonObject
 import io.worthi.SignUp.response.SignUpResponse
+import io.worthi.VerifyEmail.response.ResendOTP
 import io.worthi.VerifyEmail.response.VerifyResponse
 import io.worthi.WebAPI.WebAPI
 import io.worthi.chooseInterest.response.AddInterestsResponse
@@ -35,6 +36,7 @@ class Controller {
     var getCampainsAPI:GetCampainsAPI?=null
     var getInteractionAPI:GetInteractionAPI? = null
     var sendAnswersAPI:SendAnswersAPI? = null
+    var resendOTPAPI :ResendOTPAPI ? = null
 
 
     fun Controller(user: UserAPI)
@@ -64,9 +66,10 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(verifyEmail: VerifyEmailAPI)
+    fun Controller(verifyEmail: VerifyEmailAPI,resendOTP: ResendOTPAPI)
     {
         verifyAPI = verifyEmail
+        resendOTPAPI = resendOTP
         webAPI = WebAPI()
     }
 
@@ -367,6 +370,21 @@ class Controller {
         })
     }
 
+    fun ResendOTP (token: String,number:String)
+    {
+        webAPI?.api?.ResendOTP(token,number)?.enqueue(object :Callback<ResendOTP>
+        {
+            override fun onResponse(call: Call<ResendOTP>, response: Response<ResendOTP>) {
+                resendOTPAPI?.onResendOTPSucess(response)
+            }
+
+            override fun onFailure(call: Call<ResendOTP>, t: Throwable) {
+                resendOTPAPI?.onError(t.localizedMessage)
+            }
+
+        })
+    }
+
 
 
     interface LoginAPI {
@@ -435,6 +453,11 @@ class Controller {
 
     interface SendAnswersAPI {
         fun onSendAnswersSuccess(success:Response<AnswersResponse>)
+        fun onError(error: String)
+    }
+
+    interface ResendOTPAPI{
+        fun onResendOTPSucess(success:Response<io.worthi.VerifyEmail.response.ResendOTP>)
         fun onError(error: String)
     }
 

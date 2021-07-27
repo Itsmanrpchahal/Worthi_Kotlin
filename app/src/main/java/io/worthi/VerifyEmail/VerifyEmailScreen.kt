@@ -12,12 +12,14 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.chaos.view.PinView
 import io.worthi.Constant.BaseClass
 import io.worthi.R
 import io.worthi.Utilities.Constants
 import io.worthi.Utilities.Utility
+import io.worthi.VerifyEmail.response.ResendOTP
 import io.worthi.VerifyEmail.response.VerifyResponse
 import io.worthi.controller.Controller
 import io.worthi.yourInfo.YourInfoScreen
@@ -26,7 +28,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 
 
-class VerifyEmailScreen : BaseClass(), Controller.VerifyEmailAPI {
+class VerifyEmailScreen : BaseClass(), Controller.VerifyEmailAPI,Controller.ResendOTPAPI {
 
     private lateinit var verifybt: Button
     private lateinit var timer: TextView
@@ -103,6 +105,20 @@ class VerifyEmailScreen : BaseClass(), Controller.VerifyEmailAPI {
 
         resendcode.setOnClickListener {
             Log.d("click", "TEST")
+            if (utility.isConnectingToInternet(this)) {
+                hideKeyboard()
+                pd.show()
+                pd.setContentView(R.layout.loading)
+                Log.d("token",""+getStringVal(Constants.TOKEN))
+                controller.ResendOTP("jwt="+getStringVal(Constants.TOKEN),phonenumber)
+
+            } else {
+                utility.relative_snackbar(
+                    window.currentFocus,
+                    getString(R.string.nointernet),
+                    getString(R.string.close_up)
+                )
+            }
         }
     }
 
@@ -121,7 +137,7 @@ class VerifyEmailScreen : BaseClass(), Controller.VerifyEmailAPI {
         pd!!.setCancelable(false)
 
         controller = Controller()
-        controller.Controller(this)
+        controller.Controller(this,this)
     }
 
     override fun onVerifySuccess(success: Response<VerifyResponse>) {
@@ -138,29 +154,33 @@ class VerifyEmailScreen : BaseClass(), Controller.VerifyEmailAPI {
                 finish()
                // finish()
             } else {
-                utility.relative_snackbar(
-                    window.currentFocus,
-                    success.message(),
-                    getString(R.string.close_up)
-                )
+                Toast.makeText(this,""+success.message(),Toast.LENGTH_SHORT).show()
+
             }
         } else {
-            utility.relative_snackbar(
-                window.currentFocus,
-                success.message(),
-                getString(R.string.close_up)
-            )
+            Toast.makeText(this,""+success.message(),Toast.LENGTH_SHORT).show()
         }
 
     }
 
+    override fun onResendOTPSucess(success: Response<ResendOTP>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+            if (success.code()==201)
+            {
+                Toast.makeText(this,""+"Message sent",Toast.LENGTH_SHORT).show()
+            }else {
+                Toast.makeText(this,""+success.code(),Toast.LENGTH_SHORT).show()
+            }
+        }else {
+
+        }
+    }
+
     override fun onError(error: String) {
         pd.dismiss()
-        utility.relative_snackbar(
-            window.currentFocus,
-            error,
-            getString(R.string.close_up)
-        )
+        Toast.makeText(this,""+error,Toast.LENGTH_SHORT).show()
     }
 
     private fun hideKeyboard() {

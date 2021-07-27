@@ -74,8 +74,6 @@ class SplashActivity : BaseClass() ,Controller.UserAPI{
                         getString(R.string.close_up)
                     )
                 }
-
-
             }else {
                 startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
                 finish()
@@ -199,7 +197,7 @@ class SplashActivity : BaseClass() ,Controller.UserAPI{
         {
             if (success.body()?.isVerified==false)
             {
-                startActivity(Intent(this@SplashActivity,VerifyEmailScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
                 finish()
             } else if (success.body()?.profile==null || success.body()?.profile!!.equals(null))
             {

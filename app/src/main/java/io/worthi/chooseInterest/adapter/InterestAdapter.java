@@ -25,6 +25,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
     Context context;
     ArrayList<GetInterestsResponse> getInterestsResponseArrayList = new ArrayList<>();
     ArrayList<String> selected = new ArrayList<>();
+    int pos = 0;
 
     public InterestAdapter(Context context, ArrayList<GetInterestsResponse> getInterestsResponseArrayList) {
         this.context = context;
@@ -43,7 +44,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         holder.interesttv.setText(getInterestsResponseArrayList.get(position).getName());
-
+        pos = position;
         holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -62,6 +63,16 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
         return getInterestsResponseArrayList.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout background ;
         TextView interesttv;
@@ -73,6 +84,8 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
             background = itemView.findViewById(R.id.background);
             interesttv = itemView.findViewById(R.id.interesttv);
             checkbox = itemView.findViewById(R.id.checkbox);
+
+
 
         }
     }
