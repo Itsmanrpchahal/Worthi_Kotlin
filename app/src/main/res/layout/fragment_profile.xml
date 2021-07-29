@@ -189,8 +189,24 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/themeborder"
                 android:text="Feedback"
-                android:textColor="@color/black"
-                android:textAllCaps="false">
+                android:textAllCaps="false"
+                android:textColor="@color/black">
+
+            </Button>
+
+            <Button
+                android:id="@+id/rateapp_bt"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:visibility="gone"
+
+                android:layout_marginTop="16dp"
+                android:background="@drawable/themeborder"
+                android:text="Rate this app"
+                android:textAllCaps="false"
+                android:textColor="@color/black">
 
             </Button>
 
@@ -217,6 +233,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@android:color/holo_red_light"
                 android:text="Log out"
+                android:layout_marginBottom="16dp"
                 android:textColor="@color/white"
                 android:textAllCaps="false">
 

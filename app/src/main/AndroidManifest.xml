@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/appicon"
         android:supportsRtl="true"
         android:theme="@style/Translucent">
-        <activity android:name=".submitQualifier.SorryScreen"></activity>
+        <activity android:name=".feedScreen.fragments.profile.CompleteActivity"></activity>
+        <activity android:name=".submitQualifier.SorryScreen" />
         <activity android:name=".submitQualifier.CongratulationScreen" />
         <activity android:name=".submitQualifier.SubmitQualifierScreen" />
         <activity android:name=".explore.ExploreScreen" />

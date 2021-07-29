@@ -1,15 +1,29 @@
 package io.worthi.feedScreen.fragments.profile
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.model.ReviewErrorCode
+import com.google.android.play.core.tasks.Task
 import io.worthi.Constant.BaseFrag
 import io.worthi.R
 import io.worthi.Utilities.Constants
@@ -28,15 +42,20 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
     private lateinit var shareapp: Button
     private lateinit var logout: Button
     private lateinit var feedback_bt: Button
+    private lateinit var rateapp_bt: Button
     private lateinit var name: EditText
     private lateinit var email: EditText
-    private lateinit var price : TextView
-    private lateinit var interest : TextView
+    private lateinit var price: TextView
+    private lateinit var interest: TextView
     private lateinit var utility: Utility
     private lateinit var pd: ProgressDialog
     private lateinit var controller: Controller
     private lateinit var dialog: Dialog
-    private lateinit var username : TextView
+    private lateinit var username: TextView
+    private val ACTIVITY_CALLBACK = 1
+    private lateinit var request: Task<ReviewInfo>
+    private lateinit var reviewInfo: ReviewInfo
+    private lateinit var reviewManager: ReviewManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +64,13 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
         // Inflate the layout for this fragment
         var view: View
         view = inflater.inflate(R.layout.fragment_profile, container, false)
+        reviewManager = ReviewManagerFactory.create(requireContext())
 
+        //Request a ReviewInfo object ahead of time (Pre-cache)
+        request = reviewManager.requestReviewFlow()
+
+
+        activateReviewInfo()
         init(view)
         listeners()
         return view
@@ -60,7 +85,7 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
                 var shareMessage = "\nLet me recommend you this application\n\n"
                 shareMessage =
                     """
-                    ${shareMessage}https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_IN&gl=US
+                    ${shareMessage}https://play.google.com/store/apps/details?id=io.worthi
                     
                     
                     """.trimIndent()
@@ -130,7 +155,36 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
             dialog.show()
 
         }
+
+        username.setOnClickListener {
+            // We got the ReviewInfo object
+            StartReviewFlow()
+
+
+        }
     }
+
+    fun activateReviewInfo() {
+        reviewManager = ReviewManagerFactory.create(requireContext())
+        request = reviewManager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                reviewInfo = task.result
+            } else {
+                Log.d("REVIEW", "REVIEW FAIL")
+            }
+        }
+    }
+
+    fun StartReviewFlow() {
+        if (reviewInfo != null) {
+            val flow = reviewManager.launchReviewFlow(context as Activity, reviewInfo)
+            flow.addOnCompleteListener { task ->
+                Log.d("REVIEW", "TASK COMPLETED")
+            }
+        }
+    }
+
 
     private fun init(view: View) {
         utility = Utility()
@@ -164,6 +218,7 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
         price = view.findViewById(R.id.price)
         interest = view.findViewById(R.id.interest)
         username = view.findViewById(R.id.username)
+        rateapp_bt = view.findViewById(R.id.rateapp_bt)
     }
 
     override fun onLogoutSuccess(response: Response<LogoutResponse>) {
@@ -189,15 +244,14 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
     override fun onSendfeedbackAPI(successs: Response<SendFeedbackResponse>) {
         pd.dismiss()
         if (successs.isSuccessful) {
-            if (successs.body()!!.success==true)
-            {
+            if (successs.body()!!.success == true) {
                 dialog.dismiss()
                 utility.relative_snackbar(
                     activity?.window?.decorView,
                     "Feedback sent",
                     getString(R.string.close_up)
                 )
-            }else {
+            } else {
                 dialog.dismiss()
                 utility.relative_snackbar(
                     activity?.window?.decorView,
@@ -205,13 +259,13 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
                     getString(R.string.close_up)
                 )
             }
-        } else if (successs.code()==401){
+        } else if (successs.code() == 401) {
             utility.relative_snackbar(
                 activity?.window?.decorView,
                 "Bad Request",
                 getString(R.string.close_up)
             )
-        }else {
+        } else {
             utility.relative_snackbar(
                 activity?.window?.decorView,
                 successs.message(),
@@ -226,10 +280,9 @@ class ProfileFrag : BaseFrag(), Controller.LogoutAPI, Controller.SendFeedbackAPI
             if (success.code() == 200) {
                 name.setText(success.body()?.name)
                 email.setText(success.body()?.email)
-                price.setText(success.body()?.totalEarnedBalance.toString()+"$")
+                price.setText(success.body()?.totalEarnedBalance.toString() + "$")
                 username.setText(success.body()?.name)
-                if (success.body()?.interactedFeedsCount!=null)
-                {
+                if (success.body()?.interactedFeedsCount != null) {
                     interest.setText(success.body()?.interactedFeedsCount!!)
                 }
 

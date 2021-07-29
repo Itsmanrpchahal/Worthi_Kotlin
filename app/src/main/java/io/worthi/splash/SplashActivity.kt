@@ -35,7 +35,7 @@ import io.worthi.yourInfo.YourInfoScreen
 import retrofit2.Response
 
 
-class SplashActivity : BaseClass() ,Controller.UserAPI{
+class SplashActivity : BaseClass(), Controller.UserAPI {
 
     var permissions = arrayOf<String>(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -58,15 +58,13 @@ class SplashActivity : BaseClass() ,Controller.UserAPI{
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-       // methodRequiresPermission()
+        // methodRequiresPermission()
         init()
 
-        if (getStringVal(Constants.WELCOMECHECK).equals("1"))
-        {
-            if (!getStringVal(Constants.TOKEN).equals(""))
-            {
+        if (getStringVal(Constants.WELCOMECHECK).equals("1")) {
+            if (!getStringVal(Constants.TOKEN).equals("")) {
                 if (utility.isConnectingToInternet(this@SplashActivity)) {
-                    controller.User("jwt="+getStringVal(Constants.TOKEN),"application/json")
+                    controller.User("jwt=" + getStringVal(Constants.TOKEN), "application/json")
                 } else {
                     utility.relative_snackbar(
                         window.currentFocus,
@@ -74,24 +72,34 @@ class SplashActivity : BaseClass() ,Controller.UserAPI{
                         getString(R.string.close_up)
                     )
                 }
-            }else {
-                startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                finish()
+            } else {
+                Handler(Looper.getMainLooper()).postDelayed({
+
+//requestStoragePermission()
+                    startActivity(
+                        Intent(this@SplashActivity, LoginScreen::class.java).setFlags(
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    )
+                    finish()
+
+                }, 3000)
+
             }
-        }else {
-            startActivity(Intent(this@SplashActivity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+        } else {
+            startActivity(
+                Intent(
+                    this@SplashActivity,
+                    MainActivity::class.java
+                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            )
             finish()
         }
-//        Handler(Looper.getMainLooper()).postDelayed({
-//
-////requestStoragePermission()
-//
-//
-//        }, 3000)
+
     }
 
-    fun init()
-    {
+    fun init() {
         utility = Utility()
         pd = ProgressDialog(this)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -115,16 +123,15 @@ class SplashActivity : BaseClass() ,Controller.UserAPI{
                         perclear = true
 
 
-
-
                         // Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (getStringVal(Constants.WELCOMECHECK).equals("1"))
-                        {
-                            if (!getStringVal(Constants.TOKEN).equals(""))
-                            {
+                        if (getStringVal(Constants.WELCOMECHECK).equals("1")) {
+                            if (!getStringVal(Constants.TOKEN).equals("")) {
                                 if (utility.isConnectingToInternet(this@SplashActivity)) {
-                                    controller.User("jwt="+getStringVal(Constants.TOKEN),"application/json")
+                                    controller.User(
+                                        "jwt=" + getStringVal(Constants.TOKEN),
+                                        "application/json"
+                                    )
                                 } else {
                                     utility.relative_snackbar(
                                         window.currentFocus,
@@ -132,12 +139,24 @@ class SplashActivity : BaseClass() ,Controller.UserAPI{
                                         getString(R.string.close_up)
                                     )
                                 }
-                            }else {
-                                startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                            } else {
+                                startActivity(
+                                    Intent(
+                                        this@SplashActivity,
+                                        LoginScreen::class.java
+                                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                )
                                 finish()
                             }
-                        }else {
-                            startActivity(Intent(this@SplashActivity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                        } else {
+                            startActivity(
+                                Intent(
+                                    this@SplashActivity,
+                                    MainActivity::class.java
+                                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            )
                             finish()
                         }
                     }
@@ -192,23 +211,40 @@ class SplashActivity : BaseClass() ,Controller.UserAPI{
 
     override fun onUserSuccessAPI(success: Response<UserResponse>) {
         pd.dismiss()
-        if (success.isSuccessful)
-
-        {
-            if (success.body()?.isVerified==false)
-            {
-                startActivity(Intent(this@SplashActivity,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+        if (success.isSuccessful) {
+            if (success.body()?.isVerified == false) {
+                startActivity(
+                    Intent(
+                        this@SplashActivity,
+                        LoginScreen::class.java
+                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                )
                 finish()
-            } else if (success.body()?.profile==null || success.body()?.profile!!.equals(null))
-            {
-                startActivity(Intent(this@SplashActivity,YourInfoScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            } else if (success.body()?.profile == null || success.body()?.profile!!.equals(null)) {
+                startActivity(
+                    Intent(this@SplashActivity, YourInfoScreen::class.java).setFlags(
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                )
                 finish()
-            } else if (success.body()?.interests==null || success.body()?.interests!!.equals(null))
-            {
-                startActivity(Intent(this@SplashActivity, ChooseInterestScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            } else if (success.body()?.interests == null || success.body()?.interests!!.equals(null)) {
+                startActivity(
+                    Intent(
+                        this@SplashActivity,
+                        ChooseInterestScreen::class.java
+                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                )
                 finish()
             } else {
-                startActivity(Intent(this@SplashActivity,FeedScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                startActivity(
+                    Intent(
+                        this@SplashActivity,
+                        FeedScreen::class.java
+                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                )
                 finish()
             }
 

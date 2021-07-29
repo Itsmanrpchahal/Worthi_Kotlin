@@ -1,6 +1,7 @@
 package io.worthi.feedScreen.fragments.feeds
 
 import android.app.ProgressDialog
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -43,6 +44,13 @@ class FeedFrag : BaseFrag() ,Controller.GetCampainsAPI,Controller.UserAPI{
         view = inflater.inflate(R.layout.fragment_feed, container, false)
         getCamps = ArrayList()
         init(view)
+        try {
+            val pInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
+            val version = pInfo.versionName
+            Log.d("Version",version)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
         return view
     }
 

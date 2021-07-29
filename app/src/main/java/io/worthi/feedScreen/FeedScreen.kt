@@ -1,9 +1,9 @@
 package io.worthi.feedScreen
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.worthi.R
@@ -11,6 +11,7 @@ import io.worthi.feedScreen.fragments.feeds.FeedFrag
 import io.worthi.feedScreen.fragments.interactions.InteractionFrag
 import io.worthi.feedScreen.fragments.profile.ProfileFrag
 import io.worthi.feedScreen.fragments.rewards.RewardsFrag
+
 
 class FeedScreen : AppCompatActivity() {
 
@@ -24,6 +25,10 @@ class FeedScreen : AppCompatActivity() {
 
         init()
         listeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     private fun listeners() {
